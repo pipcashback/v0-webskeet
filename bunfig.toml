@@ -1,0 +1,7 @@
+[install]
+peer = true
+production = false
+
+[build]
+minify = true
+sourcemap = true

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /manage-subscriptions/
+Disallow: /_next/
+Disallow: /404
+Disallow: /500
+
+Sitemap: https://www.webskeet.com/sitemap.xml
