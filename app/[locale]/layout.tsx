@@ -176,7 +176,7 @@ export default async function LocaleLayout({
         <Navbar locale={locale} />
         <main>{children}</main>
         <Footer locale={locale} />
-        <WhatsAppButton />
+        <WhatsAppButton locale={locale} />
         <Toaster />
       </body>
     </html>

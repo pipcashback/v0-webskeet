@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,6 +21,8 @@ import {
   Target,
   BarChart,
   Users,
+  ChevronDown,
+  Search,
 } from "lucide-react"
 import Image from "next/image"
 import { toast } from "@/hooks/use-toast"
@@ -159,6 +161,76 @@ const translations = {
   },
 }
 
+// Country code data with both Arabic and English names, grouped by region
+interface CountryCodeEntry {
+  code: string
+  nameAr: string
+  nameEn: string
+  flag: string
+  group: "arab" | "international"
+}
+
+const allCountryCodes: CountryCodeEntry[] = [
+  // Arab countries
+  { code: "+20", nameAr: "مصر", nameEn: "Egypt", flag: "🇪🇬", group: "arab" },
+  { code: "+966", nameAr: "السعودية", nameEn: "Saudi Arabia", flag: "🇸🇦", group: "arab" },
+  { code: "+971", nameAr: "الإمارات", nameEn: "UAE", flag: "🇦🇪", group: "arab" },
+  { code: "+965", nameAr: "الكويت", nameEn: "Kuwait", flag: "🇰🇼", group: "arab" },
+  { code: "+973", nameAr: "البحرين", nameEn: "Bahrain", flag: "🇧🇭", group: "arab" },
+  { code: "+974", nameAr: "قطر", nameEn: "Qatar", flag: "🇶🇦", group: "arab" },
+  { code: "+968", nameAr: "عمان", nameEn: "Oman", flag: "🇴🇲", group: "arab" },
+  { code: "+962", nameAr: "الأردن", nameEn: "Jordan", flag: "🇯🇴", group: "arab" },
+  { code: "+961", nameAr: "لبنان", nameEn: "Lebanon", flag: "🇱🇧", group: "arab" },
+  { code: "+970", nameAr: "فلسطين", nameEn: "Palestine", flag: "🇵🇸", group: "arab" },
+  { code: "+963", nameAr: "سوريا", nameEn: "Syria", flag: "🇸🇾", group: "arab" },
+  { code: "+964", nameAr: "العراق", nameEn: "Iraq", flag: "🇮🇶", group: "arab" },
+  { code: "+212", nameAr: "المغرب", nameEn: "Morocco", flag: "🇲🇦", group: "arab" },
+  { code: "+213", nameAr: "الجزائر", nameEn: "Algeria", flag: "🇩🇿", group: "arab" },
+  { code: "+216", nameAr: "تونس", nameEn: "Tunisia", flag: "🇹🇳", group: "arab" },
+  { code: "+218", nameAr: "ليبيا", nameEn: "Libya", flag: "🇱🇾", group: "arab" },
+  { code: "+249", nameAr: "السودان", nameEn: "Sudan", flag: "🇸🇩", group: "arab" },
+  { code: "+967", nameAr: "اليمن", nameEn: "Yemen", flag: "🇾🇪", group: "arab" },
+  // International countries
+  { code: "+1", nameAr: "الولايات المتحدة", nameEn: "United States", flag: "🇺🇸", group: "international" },
+  { code: "+44", nameAr: "المملكة المتحدة", nameEn: "United Kingdom", flag: "🇬🇧", group: "international" },
+  { code: "+49", nameAr: "ألمانيا", nameEn: "Germany", flag: "🇩🇪", group: "international" },
+  { code: "+33", nameAr: "فرنسا", nameEn: "France", flag: "🇫🇷", group: "international" },
+  { code: "+39", nameAr: "إيطاليا", nameEn: "Italy", flag: "🇮🇹", group: "international" },
+  { code: "+34", nameAr: "إسبانيا", nameEn: "Spain", flag: "🇪🇸", group: "international" },
+  { code: "+31", nameAr: "هولندا", nameEn: "Netherlands", flag: "🇳🇱", group: "international" },
+  { code: "+46", nameAr: "السويد", nameEn: "Sweden", flag: "🇸🇪", group: "international" },
+  { code: "+47", nameAr: "النرويج", nameEn: "Norway", flag: "🇳🇴", group: "international" },
+  { code: "+45", nameAr: "الدنمارك", nameEn: "Denmark", flag: "🇩🇰", group: "international" },
+  { code: "+41", nameAr: "سويسرا", nameEn: "Switzerland", flag: "🇨🇭", group: "international" },
+  { code: "+43", nameAr: "النمسا", nameEn: "Austria", flag: "🇦🇹", group: "international" },
+  { code: "+32", nameAr: "بلجيكا", nameEn: "Belgium", flag: "🇧🇪", group: "international" },
+  { code: "+90", nameAr: "تركيا", nameEn: "Turkey", flag: "🇹🇷", group: "international" },
+  { code: "+91", nameAr: "الهند", nameEn: "India", flag: "🇮🇳", group: "international" },
+  { code: "+86", nameAr: "الصين", nameEn: "China", flag: "🇨🇳", group: "international" },
+  { code: "+81", nameAr: "اليابان", nameEn: "Japan", flag: "🇯🇵", group: "international" },
+  { code: "+82", nameAr: "كوريا الجنوبية", nameEn: "South Korea", flag: "🇰🇷", group: "international" },
+  { code: "+61", nameAr: "أستراليا", nameEn: "Australia", flag: "🇦🇺", group: "international" },
+  { code: "+64", nameAr: "نيوزيلندا", nameEn: "New Zealand", flag: "🇳🇿", group: "international" },
+  { code: "+55", nameAr: "البرازيل", nameEn: "Brazil", flag: "🇧🇷", group: "international" },
+  { code: "+52", nameAr: "المكسيك", nameEn: "Mexico", flag: "🇲🇽", group: "international" },
+  { code: "+7", nameAr: "روسيا", nameEn: "Russia", flag: "🇷🇺", group: "international" },
+  { code: "+27", nameAr: "جنوب أفريقيا", nameEn: "South Africa", flag: "🇿🇦", group: "international" },
+  { code: "+234", nameAr: "نيجيريا", nameEn: "Nigeria", flag: "🇳🇬", group: "international" },
+  { code: "+254", nameAr: "كينيا", nameEn: "Kenya", flag: "🇰🇪", group: "international" },
+  { code: "+60", nameAr: "ماليزيا", nameEn: "Malaysia", flag: "🇲🇾", group: "international" },
+  { code: "+65", nameAr: "سنغافورة", nameEn: "Singapore", flag: "🇸🇬", group: "international" },
+  { code: "+62", nameAr: "إندونيسيا", nameEn: "Indonesia", flag: "🇮🇩", group: "international" },
+  { code: "+63", nameAr: "الفلبين", nameEn: "Philippines", flag: "🇵🇭", group: "international" },
+  { code: "+66", nameAr: "تايلاند", nameEn: "Thailand", flag: "🇹🇭", group: "international" },
+  { code: "+48", nameAr: "بولندا", nameEn: "Poland", flag: "🇵🇱", group: "international" },
+  { code: "+351", nameAr: "البرتغال", nameEn: "Portugal", flag: "🇵🇹", group: "international" },
+  { code: "+30", nameAr: "اليونان", nameEn: "Greece", flag: "🇬🇷", group: "international" },
+  { code: "+353", nameAr: "أيرلندا", nameEn: "Ireland", flag: "🇮🇪", group: "international" },
+  { code: "+358", nameAr: "فنلندا", nameEn: "Finland", flag: "🇫🇮", group: "international" },
+  { code: "+92", nameAr: "باكستان", nameEn: "Pakistan", flag: "🇵🇰", group: "international" },
+  { code: "+880", nameAr: "بنغلاديش", nameEn: "Bangladesh", flag: "🇧🇩", group: "international" },
+]
+
 const ConsultationSection = ({ locale }: { locale: Locale }) => {
   const t = translations[locale]
   const isRtl = locale === "ar"
@@ -175,12 +247,62 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Country code dropdown state
+  const [codeDropdownOpen, setCodeDropdownOpen] = useState(false)
+  const [codeSearch, setCodeSearch] = useState("")
+  const codeDropdownRef = useRef<HTMLDivElement>(null)
+  const codeSearchInputRef = useRef<HTMLInputElement>(null)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (codeDropdownRef.current && !codeDropdownRef.current.contains(e.target as Node)) {
+        setCodeDropdownOpen(false)
+        setCodeSearch("")
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  // Focus search input when dropdown opens
+  useEffect(() => {
+    if (codeDropdownOpen && codeSearchInputRef.current) {
+      codeSearchInputRef.current.focus()
+    }
+  }, [codeDropdownOpen])
+
+  // Order countries based on locale: Arab first for AR, International first for EN
+  const orderedCountries = useMemo(() => {
+    const arab = allCountryCodes.filter((c) => c.group === "arab")
+    const intl = allCountryCodes.filter((c) => c.group === "international")
+    return isRtl ? [...arab, ...intl] : [...intl, ...arab]
+  }, [isRtl])
+
+  // Filter countries based on search
+  const filteredCountries = useMemo(() => {
+    if (!codeSearch.trim()) return orderedCountries
+    const q = codeSearch.toLowerCase().trim()
+    return orderedCountries.filter(
+      (c) =>
+        c.nameEn.toLowerCase().includes(q) ||
+        c.nameAr.includes(q) ||
+        c.code.includes(q)
+    )
+  }, [codeSearch, orderedCountries])
+
+  // Get selected country info
+  const selectedCountry = allCountryCodes.find((c) => c.code === formData.countryCode)
+
+  // Language value for form submissions
+  const languageValue = isRtl ? "العربية" : "English"
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // Step 1: Send data to Google Sheets (if configured)
+      // Step 1: Send data to Google Sheets (if configured) — includes Language field
       if (GOOGLE_SHEETS_WEBHOOK !== "YOUR_WEBHOOK_URL_HERE") {
         await fetch(GOOGLE_SHEETS_WEBHOOK, {
           method: "POST",
@@ -188,7 +310,10 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            language: languageValue,
+          }),
         })
       }
 
@@ -201,8 +326,10 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
       mailchimpFormData.append("COMPANY", formData.websiteUrl)
       mailchimpFormData.append("tags", "254") // Tag for consultation requests
 
-      // Add budget as a note in the merge fields (you can create a custom field in Mailchimp for this)
+      // Add budget as a note in the merge fields
       mailchimpFormData.append("MMERGE7", formData.budget) // Custom field for budget
+      // Add language/source language field
+      mailchimpFormData.append("MMERGE8", languageValue) // Custom field for language
 
       await fetch("https://dawenly.us9.list-manage.com/subscribe/post?u=06494959efc4f17721cdd07b3&id=d035fbca50", {
         method: "POST",
@@ -244,26 +371,6 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
       [field]: value,
     }))
   }
-
-  const countryCodes = [
-    { code: "+20", country: "\u0645\u0635\u0631", flag: "\ud83c\uddea\ud83c\uddec" },
-    { code: "+966", country: "\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629", flag: "\ud83c\uddf8\ud83c\udde6" },
-    { code: "+971", country: "\u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a", flag: "\ud83c\udde6\ud83c\uddea" },
-    { code: "+965", country: "\u0627\u0644\u0643\u0648\u064a\u062a", flag: "\ud83c\uddf0\ud83c\uddfc" },
-    { code: "+973", country: "\u0627\u0644\u0628\u062d\u0631\u064a\u0646", flag: "\ud83c\udde7\ud83c\udded" },
-    { code: "+974", country: "\u0642\u0637\u0631", flag: "\ud83c\uddf6\ud83c\udde6" },
-    { code: "+968", country: "\u0639\u0645\u0627\u0646", flag: "\ud83c\uddf4\ud83c\uddf2" },
-    { code: "+962", country: "\u0627\u0644\u0623\u0631\u062f\u0646", flag: "\ud83c\uddef\ud83c\uddf4" },
-    { code: "+961", country: "\u0644\u0628\u0646\u0627\u0646", flag: "\ud83c\uddf1\ud83c\udde7" },
-    { code: "+970", country: "\u0641\u0644\u0633\u0637\u064a\u0646", flag: "\ud83c\uddf5\ud83c\uddf8" },
-    { code: "+963", country: "\u0633\u0648\u0631\u064a\u0627", flag: "\ud83c\uddf8\ud83c\uddfe" },
-    { code: "+964", country: "\u0627\u0644\u0639\u0631\u0627\u0642", flag: "\ud83c\uddee\ud83c\uddf6" },
-    { code: "+212", country: "\u0627\u0644\u0645\u063a\u0631\u0628", flag: "\ud83c\uddf2\ud83c\udde6" },
-    { code: "+213", country: "\u0627\u0644\u062c\u0632\u0627\u0626\u0631", flag: "\ud83c\udde9\ud83c\uddff" },
-    { code: "+216", country: "\u062a\u0648\u0646\u0633", flag: "\ud83c\uddf9\ud83c\uddf3" },
-    { code: "+218", country: "\u0644\u064a\u0628\u064a\u0627", flag: "\ud83c\uddf1\ud83c\uddfe" },
-    { code: "+249", country: "\u0627\u0644\u0633\u0648\u062f\u0627\u0646", flag: "\ud83c\uddf8\ud83c\udde9" },
-  ]
 
   const budgetRanges = locale === "ar"
     ? ["\u0623\u0642\u0644 \u0645\u0646 $500", "$500 - $1,000", "$1,000 - $2,500", "$2,500 - $5,000", "\u0623\u0643\u062b\u0631 \u0645\u0646 $5,000"]
@@ -386,7 +493,7 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
                     />
                   </div>
 
-                  {/* Phone Number with Country Code */}
+                  {/* Phone Number with Searchable Country Code */}
                   <div className="space-y-2">
                     <Label htmlFor="phone" className={`${isRtl ? "text-right" : "text-left"} block`}>
                       {t.phone}
@@ -401,24 +508,126 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
                         className={`flex-1 ${isRtl ? "text-right" : "text-left"}`}
                         placeholder={t.phonePlaceholder}
                       />
-                      <Select
-                        value={formData.countryCode}
-                        onValueChange={(value: string) => handleInputChange("countryCode", value)}
-                      >
-                        <SelectTrigger className="w-[140px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {countryCodes.map((country) => (
-                            <SelectItem key={country.code} value={country.code}>
-                              <span className="flex items-center gap-2">
-                                <span>{country.flag}</span>
-                                <span>{country.code}</span>
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      {/* Custom searchable country code dropdown */}
+                      <div className="relative" ref={codeDropdownRef}>
+                        <button
+                          type="button"
+                          onClick={() => setCodeDropdownOpen(!codeDropdownOpen)}
+                          className="flex items-center gap-1.5 h-10 px-3 border border-input rounded-md bg-background hover:bg-accent hover:text-accent-foreground transition-colors min-w-[140px] md:min-w-[160px]"
+                        >
+                          <span className="text-base">{selectedCountry?.flag}</span>
+                          <span className="text-sm font-medium">{formData.countryCode}</span>
+                          <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${codeDropdownOpen ? "rotate-180" : ""}`} />
+                        </button>
+
+                        {codeDropdownOpen && (
+                          <div
+                            className={`absolute z-50 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl w-[280px] md:w-[320px] ${
+                              isRtl ? "left-0" : "right-0"
+                            }`}
+                          >
+                            {/* Search input */}
+                            <div className="p-2 border-b border-gray-100">
+                              <div className="relative">
+                                <Search className={`absolute top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 ${isRtl ? "right-2.5" : "left-2.5"}`} />
+                                <input
+                                  ref={codeSearchInputRef}
+                                  type="text"
+                                  value={codeSearch}
+                                  onChange={(e) => setCodeSearch(e.target.value)}
+                                  placeholder={isRtl ? "ابحث عن دولة..." : "Search country..."}
+                                  className={`w-full h-9 text-sm border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-webskeet-blue/30 focus:border-webskeet-blue ${
+                                    isRtl ? "pr-8 pl-2 text-right" : "pl-8 pr-2 text-left"
+                                  }`}
+                                />
+                              </div>
+                            </div>
+
+                            {/* Country list */}
+                            <div className="max-h-[250px] md:max-h-[300px] overflow-y-auto overscroll-contain">
+                              {filteredCountries.length === 0 ? (
+                                <div className="p-4 text-center text-sm text-gray-500">
+                                  {isRtl ? "لا توجد نتائج" : "No results found"}
+                                </div>
+                              ) : (
+                                <>
+                                  {/* Show group headers when not searching */}
+                                  {!codeSearch.trim() && (
+                                    <>
+                                      <div className={`px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 sticky top-0 ${isRtl ? "text-right" : "text-left"}`}>
+                                        {isRtl ? "الدول العربية" : (locale === "ar" ? "الدول العربية" : "International")}
+                                      </div>
+                                      {orderedCountries
+                                        .filter((c) => c.group === (isRtl ? "arab" : "international"))
+                                        .map((country) => (
+                                          <button
+                                            key={`${country.group}-${country.code}`}
+                                            type="button"
+                                            onClick={() => {
+                                              handleInputChange("countryCode", country.code)
+                                              setCodeDropdownOpen(false)
+                                              setCodeSearch("")
+                                            }}
+                                            className={`w-full flex items-center gap-2.5 px-3 py-2.5 md:py-2 text-sm hover:bg-webskeet-blue/5 transition-colors ${
+                                              formData.countryCode === country.code ? "bg-webskeet-blue/10 font-medium" : ""
+                                            } ${isRtl ? "text-right flex-row-reverse" : "text-left"}`}
+                                          >
+                                            <span className="text-lg shrink-0">{country.flag}</span>
+                                            <span className="flex-1 truncate">{isRtl ? country.nameAr : country.nameEn}</span>
+                                            <span className="text-gray-500 text-xs shrink-0" dir="ltr">{country.code}</span>
+                                          </button>
+                                        ))}
+                                      <div className={`px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 sticky top-0 ${isRtl ? "text-right" : "text-left"}`}>
+                                        {isRtl ? "الدول الدولية" : (locale === "ar" ? "الدول الدولية" : "Arab Countries")}
+                                      </div>
+                                      {orderedCountries
+                                        .filter((c) => c.group === (isRtl ? "international" : "arab"))
+                                        .map((country) => (
+                                          <button
+                                            key={`${country.group}-${country.code}`}
+                                            type="button"
+                                            onClick={() => {
+                                              handleInputChange("countryCode", country.code)
+                                              setCodeDropdownOpen(false)
+                                              setCodeSearch("")
+                                            }}
+                                            className={`w-full flex items-center gap-2.5 px-3 py-2.5 md:py-2 text-sm hover:bg-webskeet-blue/5 transition-colors ${
+                                              formData.countryCode === country.code ? "bg-webskeet-blue/10 font-medium" : ""
+                                            } ${isRtl ? "text-right flex-row-reverse" : "text-left"}`}
+                                          >
+                                            <span className="text-lg shrink-0">{country.flag}</span>
+                                            <span className="flex-1 truncate">{isRtl ? country.nameAr : country.nameEn}</span>
+                                            <span className="text-gray-500 text-xs shrink-0" dir="ltr">{country.code}</span>
+                                          </button>
+                                        ))}
+                                    </>
+                                  )}
+                                  {/* Show flat filtered results when searching */}
+                                  {codeSearch.trim() &&
+                                    filteredCountries.map((country) => (
+                                      <button
+                                        key={`search-${country.code}`}
+                                        type="button"
+                                        onClick={() => {
+                                          handleInputChange("countryCode", country.code)
+                                          setCodeDropdownOpen(false)
+                                          setCodeSearch("")
+                                        }}
+                                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 md:py-2 text-sm hover:bg-webskeet-blue/5 transition-colors ${
+                                          formData.countryCode === country.code ? "bg-webskeet-blue/10 font-medium" : ""
+                                        } ${isRtl ? "text-right flex-row-reverse" : "text-left"}`}
+                                      >
+                                        <span className="text-lg shrink-0">{country.flag}</span>
+                                        <span className="flex-1 truncate">{isRtl ? country.nameAr : country.nameEn}</span>
+                                        <span className="text-gray-500 text-xs shrink-0" dir="ltr">{country.code}</span>
+                                      </button>
+                                    ))}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
