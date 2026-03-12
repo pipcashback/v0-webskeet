@@ -101,6 +101,7 @@ interface RenderOptions {
       hyperlink?: Asset[];
     };
   };
+  locale?: string;
 }
 
 // Default render options
@@ -259,9 +260,15 @@ export function renderRichText(
 
       if (isInternalLink) {
         // Internal links: dofollow, same tab
-        const internalPath = url.startsWith("/")
+        let internalPath = url.startsWith("/")
           ? url
           : url.replace(/https:\/\/(www\.)?webskeet\.com/, "") || "/";
+
+        // Prefix internal links with /ar/ when rendering Arabic content
+        if (options.locale === "ar" && !internalPath.startsWith("/ar")) {
+          internalPath = `/ar${internalPath}`;
+        }
+
         return (
           <Link
             href={internalPath}
@@ -466,7 +473,7 @@ export function renderRichText(
 export function createRichTextRenderOptions(links?: {
   entries?: { [key: string]: Entry[] };
   assets?: { [key: string]: Asset[] };
-}): RenderOptions {
+}, locale?: string): RenderOptions {
   // Create maps for entries and assets
   const entryMap = new Map<string, Entry>();
   const assetMap = new Map<string, Asset>();
@@ -495,6 +502,7 @@ export function createRichTextRenderOptions(links?: {
 
   // Create custom renderers
   return {
+    locale,
     renderNode: {
       "embedded-asset-block": (node) => {
         const assetId = node.data?.target?.sys?.id;

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import type { Locale } from "@/i18n/config"
 import { getDictionary } from "@/i18n/get-dictionary"
 import { fetchBlogPost } from "@/lib/contentful"
+import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import ShareButtons from "@/components/ShareButtons"
@@ -22,6 +23,15 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const dict = await getDictionary(locale)
   const isArabic = locale === "ar"
   const lp = (path: string) => (locale === "ar" ? `/ar${path}` : path)
+
+  // English blog posts don't exist — return 404 metadata
+  if (!isArabic) {
+    return {
+      title: "Article Not Found",
+      description: "This article is not available in English.",
+      robots: { index: false, follow: false },
+    }
+  }
 
   const post = await fetchBlogPost(slug)
 
@@ -82,9 +92,15 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { locale, slug } = await params
-  const dict = await getDictionary(locale)
   const isArabic = locale === "ar"
-  const lp = (path: string) => (locale === "ar" ? `/ar${path}` : path)
+
+  // English blog posts don't exist — return 404
+  if (!isArabic) {
+    notFound()
+  }
+
+  const dict = await getDictionary(locale)
+  const lp = (path: string) => `/ar${path}`
 
   const post = await fetchBlogPost(slug)
 
@@ -193,7 +209,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           sizes="(max-width: 768px) 100vw, 1200px"
         />
         <div className="prose prose-lg max-w-none">
-          {renderRichText(post.description, createRichTextRenderOptions(post.includes))}
+          {renderRichText(post.description, createRichTextRenderOptions(post.includes, locale))}
         </div>
         <footer className="mt-16">
           {/* CTA for the article about how an SEO expert helps increase visits and sales */}
