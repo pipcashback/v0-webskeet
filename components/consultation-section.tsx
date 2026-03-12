@@ -30,7 +30,7 @@ import type { Locale } from "@/i18n/config"
 
 // Google Sheets Webhook URL - Replace with your actual webhook URL after deploying the Google Apps Script
 const GOOGLE_SHEETS_WEBHOOK =
-  "https://script.google.com/macros/s/AKfycbw0E_HUlGEIg3wVWcFkz6TfuLelCWJ97EQ1qUg4TBkkjuSf7HLQUrEjdBpruGn1Vbp7Pg/exec"
+  "https://script.google.com/macros/s/AKfycbyoQO7HadH1BR3PoDAPlhbTRodvpn6VKt4IkuJDh00yT8If3lo7HObGzAWHQTwyMRQsDg/exec"
 
 const translations = {
   en: {
@@ -320,7 +320,7 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
   const selectedCountry = allCountryCodes.find((c) => c.code === formData.countryCode)
 
   // Language value for form submissions
-  const languageValue = isRtl ? "العربية" : "English"
+  const languageValue = isRtl ? "ar" : "en"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
