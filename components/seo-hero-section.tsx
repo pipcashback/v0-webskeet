@@ -1,12 +1,59 @@
 "use client"
 
 import type React from "react"
+import type { Locale } from "@/i18n/config"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Search, BarChart3, ArrowRight, Award, TrendingUp, Globe, LineChart, MousePointer, Link2 } from "lucide-react"
 
-const SEOHeroSection = () => {
+const translations = {
+  en: {
+    seoLabel: "SEO ",
+    heroSubtitle: "Services That Drive Your Business Forward",
+    description:
+      "Comprehensive SEO solutions tailored to your business needs. Free consultation to define the right search engine optimization strategy and increase your online visibility.",
+    freeConsultation: "Free Consultation",
+    ourServices: "Our Services",
+    completeAnalysis: "Complete Analysis",
+    completeAnalysisDesc: "Comprehensive site and competitor analysis",
+    customStrategy: "Custom Strategy",
+    customStrategyDesc: "SEO plan tailored to your needs",
+    tangibleResults: "Tangible Results",
+    tangibleResultsDesc: "Monthly reports and continuous improvement",
+    keywords: "Keywords",
+    backlinks: "Backlinks",
+    technicalSeo: "Technical SEO",
+    organicTrafficGrowth: "Organic Traffic Growth",
+    performanceAnalysis: "Performance Analysis",
+    advancedSeoReports: "Advanced SEO Reports",
+  },
+  ar: {
+    seoLabel: "خدمات ",
+    heroSubtitle: "تقود شركتك نحو الظهور",
+    description:
+      "حلول SEO شاملة مخصصة لاحتياجات عملك. استشارة مجانية لتحديد استراتيجية تحسين محركات البحث المناسبة وزيادة ظهورك عبر الإنترنت.",
+    freeConsultation: "استشارة مجانية",
+    ourServices: "خدماتنا",
+    completeAnalysis: "تحليل متكامل",
+    completeAnalysisDesc: "تحليل شامل للموقع والمنافسين",
+    customStrategy: "استراتيجية مخصصة",
+    customStrategyDesc: "خطة SEO مخصصة لاحتياجاتك",
+    tangibleResults: "نتائج ملموسة",
+    tangibleResultsDesc: "تقارير شهرية وتحسين مستمر",
+    keywords: "كلمات مفتاحية",
+    backlinks: "روابط خلفية",
+    technicalSeo: "تحسين فني",
+    organicTrafficGrowth: "زيادة الزوار العضويين",
+    performanceAnalysis: "تحليل الأداء",
+    advancedSeoReports: "تقارير SEO متقدمة",
+  },
+}
+
+const SEOHeroSection = ({ locale }: { locale: Locale }) => {
+  const t = translations[locale]
+  const isRtl = locale === "ar"
+
   const [isVisible, setIsVisible] = useState(false)
   const [animateChart, setAnimateChart] = useState(false)
 
@@ -78,34 +125,48 @@ const SEOHeroSection = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
           <div
-            className={`text-right transform transition-all duration-1000 ${isVisible ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"}`}
+            className={`${isRtl ? "text-right" : "text-left"} transform transition-all duration-1000 ${isVisible ? "translate-x-0 opacity-100" : isRtl ? "translate-x-10 opacity-0" : "-translate-x-10 opacity-0"}`}
           >
             {/* Heading with visual effects - slightly reduced size */}
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight">
-              <span className="heading-gradient relative inline-block">
-                {"خدمات "}
-                <span style={{ direction: "ltr", display: "inline-block", fontSize: "0.85em" }}>SEO</span>
-                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-webskeet-blue/40 to-transparent rounded-full"></span>
-              </span>{" "}
-              <span className="text-webskeet-blue relative">
-                تقود شركتك نحو الظهور
-                <span className="absolute -bottom-1 -right-1.5 w-3/4 h-0.5 bg-webskeet-gold/40 rounded-full"></span>
-              </span>
+              {locale === "ar" ? (
+                <>
+                  <span className="heading-gradient relative inline-block">
+                    {t.seoLabel}
+                    <span style={{ direction: "ltr", display: "inline-block", fontSize: "0.85em" }}>SEO</span>
+                    <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-webskeet-blue/40 to-transparent rounded-full"></span>
+                  </span>{" "}
+                  <span className="text-webskeet-blue relative">
+                    {t.heroSubtitle}
+                    <span className="absolute -bottom-1 -right-1.5 w-3/4 h-0.5 bg-webskeet-gold/40 rounded-full"></span>
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="heading-gradient relative inline-block">
+                    {t.seoLabel}
+                    <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-webskeet-blue/40 to-transparent rounded-full"></span>
+                  </span>
+                  <span className="text-webskeet-blue relative">
+                    {t.heroSubtitle}
+                    <span className="absolute -bottom-1 -left-1.5 w-3/4 h-0.5 bg-webskeet-gold/40 rounded-full"></span>
+                  </span>
+                </>
+              )}
             </h1>
 
             {/* Enhanced paragraph - slightly smaller text */}
             <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
-              حلول SEO شاملة مخصصة لاحتياجات عملك. استشارة مجانية لتحديد استراتيجية تحسين محركات البحث المناسبة وزيادة
-              ظهورك عبر الإنترنت.
+              {t.description}
             </p>
 
             {/* CTA buttons - slightly more compact */}
             <div className="flex flex-col sm:flex-row gap-3 justify-start">
-              <a href="/#consultation" onClick={scrollToConsultation}>
+              <a href={locale === "ar" ? "/ar/#consultation" : "/#consultation"} onClick={scrollToConsultation}>
                 <Button className="btn-primary btn-3d shadow-lg shadow-primary/20 hover:shadow-primary/40 group overflow-hidden relative">
                   <span className="relative z-10 flex items-center">
-                    استشارة مجانية
-                    <ArrowRight className="mr-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
+                    {t.freeConsultation}
+                    <ArrowRight className={`${isRtl ? "mr-2" : "ml-2"} h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform`} />
                   </span>
                   <span className="absolute inset-0 bg-gradient-to-r from-webskeet-blue/80 to-webskeet-blue opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 </Button>
@@ -116,8 +177,8 @@ const SEOHeroSection = () => {
                   className="group border-2 hover:border-primary transition-colors relative overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center">
-                    خدماتنا
-                    <TrendingUp className="mr-2 h-4 w-4 group-hover:text-primary transition-colors inline-block" />
+                    {t.ourServices}
+                    <TrendingUp className={`${isRtl ? "mr-2" : "ml-2"} h-4 w-4 group-hover:text-primary transition-colors inline-block`} />
                   </span>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-webskeet-blue group-hover:w-full transition-all duration-300"></span>
                 </Button>
@@ -130,24 +191,24 @@ const SEOHeroSection = () => {
                 <div className="feature-icon mb-2 mx-auto group-hover:bg-webskeet-gold/20 transition-colors">
                   <Search className="h-4 w-4" />
                 </div>
-                <h3 className="text-base font-semibold">تحليل متكامل</h3>
-                <p className="text-xs text-gray-600">تحليل شامل للموقع والمنافسين</p>
+                <h3 className="text-base font-semibold">{t.completeAnalysis}</h3>
+                <p className="text-xs text-gray-600">{t.completeAnalysisDesc}</p>
                 <div className="h-1 w-0 bg-webskeet-gold mx-auto mt-1 group-hover:w-10 transition-all duration-300"></div>
               </div>
               <div className="bg-white p-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center group hover:-translate-y-1 hover:border-accent border border-transparent">
                 <div className="feature-icon mb-2 mx-auto group-hover:bg-webskeet-gold/20 transition-colors">
                   <BarChart3 className="h-4 w-4" />
                 </div>
-                <h3 className="text-base font-semibold">استراتيجية مخصصة</h3>
-                <p className="text-xs text-gray-600">خطة SEO مخصصة لاحتياجاتك</p>
+                <h3 className="text-base font-semibold">{t.customStrategy}</h3>
+                <p className="text-xs text-gray-600">{t.customStrategyDesc}</p>
                 <div className="h-1 w-0 bg-webskeet-gold mx-auto mt-1 group-hover:w-10 transition-all duration-300"></div>
               </div>
               <div className="bg-white p-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center group hover:-translate-y-1 hover:border-accent border border-transparent">
                 <div className="feature-icon mb-2 mx-auto group-hover:bg-webskeet-gold/20 transition-colors">
                   <Award className="h-4 w-4" />
                 </div>
-                <h3 className="text-base font-semibold">نتائج ملموسة</h3>
-                <p className="text-xs text-gray-600">تقارير شهرية وتحسين مستمر</p>
+                <h3 className="text-base font-semibold">{t.tangibleResults}</h3>
+                <p className="text-xs text-gray-600">{t.tangibleResultsDesc}</p>
                 <div className="h-1 w-0 bg-webskeet-gold mx-auto mt-1 group-hover:w-10 transition-all duration-300"></div>
               </div>
             </div>
@@ -228,8 +289,8 @@ const SEOHeroSection = () => {
                 <>
                   {/* بطاقات متحركة حول الرسم البياني */}
                   <div className="absolute top-[25%] right-[15%] bg-white p-2 rounded-lg shadow-lg border border-webskeet-blue/10 transform animate-float-vertical">
-                    <div className="flex items-center gap-2 text-right">
-                      <span className="text-xs font-medium">كلمات مفتاحية</span>
+                    <div className={`flex items-center gap-2 ${isRtl ? "text-right" : "text-left"}`}>
+                      <span className="text-xs font-medium">{t.keywords}</span>
                       <Search className="h-3 w-3 text-webskeet-blue" />
                     </div>
                   </div>
@@ -240,8 +301,8 @@ const SEOHeroSection = () => {
                       animationDelay: "1.2s",
                     }}
                   >
-                    <div className="flex items-center gap-2 text-right">
-                      <span className="text-xs font-medium">روابط خلفية</span>
+                    <div className={`flex items-center gap-2 ${isRtl ? "text-right" : "text-left"}`}>
+                      <span className="text-xs font-medium">{t.backlinks}</span>
                       <Link2 className="h-3 w-3 text-webskeet-blue" />
                     </div>
                   </div>
@@ -252,8 +313,8 @@ const SEOHeroSection = () => {
                       animationDelay: "0.7s",
                     }}
                   >
-                    <div className="flex items-center gap-2 text-right">
-                      <span className="text-xs font-medium">تحسين فني</span>
+                    <div className={`flex items-center gap-2 ${isRtl ? "text-right" : "text-left"}`}>
+                      <span className="text-xs font-medium">{t.technicalSeo}</span>
                       <BarChart3 className="h-3 w-3 text-webskeet-blue" />
                     </div>
                   </div>
@@ -264,8 +325,8 @@ const SEOHeroSection = () => {
                       animationDelay: "1.5s",
                     }}
                   >
-                    <div className="flex items-center gap-2 text-right">
-                      <span className="text-xs font-medium">زيادة الزوار العضويين</span>
+                    <div className={`flex items-center gap-2 ${isRtl ? "text-right" : "text-left"}`}>
+                      <span className="text-xs font-medium">{t.organicTrafficGrowth}</span>
                       <TrendingUp className="h-3 w-3 text-accent" />
                     </div>
                   </div>
@@ -291,12 +352,12 @@ const SEOHeroSection = () => {
               )}
 
               {/* لوحة معلومات تحليلية */}
-              <div className="absolute top-5 right-5 bg-white/90 p-2 rounded-lg shadow-lg border border-gray-100 backdrop-blur-sm text-right">
-                <div className="text-xs font-medium text-webskeet-blue mb-1 flex items-center justify-end">
-                  <span>تحليل الأداء</span>
-                  <LineChart className="h-3 w-3 ml-1" />
+              <div className={`absolute top-5 right-5 bg-white/90 p-2 rounded-lg shadow-lg border border-gray-100 backdrop-blur-sm ${isRtl ? "text-right" : "text-left"}`}>
+                <div className={`text-xs font-medium text-webskeet-blue mb-1 flex items-center ${isRtl ? "justify-end" : "justify-start"}`}>
+                  <span>{t.performanceAnalysis}</span>
+                  <LineChart className={`h-3 w-3 ${isRtl ? "ml-1" : "mr-1"}`} />
                 </div>
-                <div className="flex gap-1.5 justify-end">
+                <div className={`flex gap-1.5 ${isRtl ? "justify-end" : "justify-start"}`}>
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={`bar-${i}`}
@@ -312,7 +373,7 @@ const SEOHeroSection = () => {
 
               {/* شارة نتائج السيو */}
               <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-webskeet-blue to-webskeet-blue/80 p-2 rounded-lg text-white text-xs font-bold shadow-lg transform rotate-3 animate-slow-float">
-                تقارير SEO متقدمة
+                {t.advancedSeoReports}
               </div>
 
               {/* مؤشر للتفاعل */}
@@ -330,59 +391,59 @@ const SEOHeroSection = () => {
           from { transform: translateX(-50%) translateY(-50%) rotate(0deg) translateX(calc(100% + 30px)) rotate(0deg); }
           to { transform: translateX(-50%) translateY(-50%) rotate(360deg) translateX(calc(100% + 30px)) rotate(-360deg); }
         }
-        
+
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
-        
+
         @keyframes pulse {
           0%, 100% { opacity: 0.6; }
           50% { opacity: 1; }
         }
-        
+
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-8px); }
         }
-        
+
         @keyframes fadeInScale {
           from { opacity: 0; transform: scale(0.8); }
           to { opacity: 1; transform: scale(1); }
         }
-        
+
         @keyframes moveUpDown {
           0% { transform: translateY(20px); opacity: 0; }
           100% { transform: translateY(-20px); opacity: 1; }
         }
-        
+
         @keyframes particleMove {
           0% { opacity: 0; transform: scale(0.8) translateX(20px); }
           20% { opacity: 1; }
           80% { opacity: 1; }
           100% { opacity: 0; transform: scale(1) translateX(-20px); }
         }
-        
+
         .animate-very-slow-float {
           animation: float 8s ease-in-out infinite;
         }
-        
+
         .animate-slow-float {
           animation: float 5s ease-in-out infinite;
         }
-        
+
         .animate-pulse-soft {
           animation: pulse 4s infinite ease-in-out;
         }
-        
+
         .animate-bounce-slow {
           animation: bounce-slow 2s infinite ease-in-out;
         }
-        
+
         .perspective-1000 {
           perspective: 1000px;
         }
-        
+
         .feature-icon {
           width: 36px;
           height: 36px;
@@ -393,12 +454,12 @@ const SEOHeroSection = () => {
           background-color: #f0f9ff;
           transition: all 0.3s ease;
         }
-        
+
         .keyword-particle {
           animation: particleMove 8s infinite linear;
           opacity: 0;
         }
-        
+
         .ranking-indicator {
           animation: moveUpDown 4s infinite ease-out;
           opacity: 0;

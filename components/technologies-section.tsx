@@ -1,6 +1,18 @@
+import type { Locale } from "@/i18n/config"
 import Image from "next/image"
 
-export default function TechnologiesSection() {
+const translations = {
+  en: {
+    sectionTitle: "Our Practical SEO Tools",
+  },
+  ar: {
+    sectionTitle: "أدواتنا العملية لتحسين السيو",
+  },
+}
+
+const TechnologiesSection = ({ locale }: { locale: Locale }) => {
+  const t = translations[locale]
+
   const tools = [
     { name: "Google Search Console", logo: "/images/tools/google-search-console.png" },
     { name: "Google Analytics", logo: "/images/tools/google-analytics.png" },
@@ -22,7 +34,7 @@ export default function TechnologiesSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">أدواتنا العملية لتحسين السيو</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t.sectionTitle}</h2>
         </div>
 
         {/* Horizontal logos container */}
@@ -47,3 +59,5 @@ export default function TechnologiesSection() {
     </section>
   )
 }
+
+export default TechnologiesSection

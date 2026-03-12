@@ -31,35 +31,20 @@ const nextConfig = {
         destination: 'https://webskeet.com/:path*',
         permanent: true,
       },
-      // Legacy redirect for old SEO title generator
+      // Legacy redirect for old SEO title generator (non-locale path)
       {
-        source: '/seo-title-generator',
+        source: '/en/seo-title-generator',
         destination: '/tools/seo-title-generator',
         permanent: true,
       },
-      // Redirect 404 pages to home
+      // Legacy routes redirect to home
       {
-        source: '/services',
+        source: '/en/services',
         destination: '/',
         permanent: true,
       },
       {
-        source: '/ar/blog',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/ar/portfolio',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/portfolio',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/ar',
+        source: '/en/portfolio',
         destination: '/',
         permanent: true,
       },
