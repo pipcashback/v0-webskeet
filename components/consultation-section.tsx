@@ -162,73 +162,77 @@ const translations = {
 }
 
 // Country code data with both Arabic and English names, grouped by region
+// iso field is used for IP-based auto-detection matching
 interface CountryCodeEntry {
   code: string
   nameAr: string
   nameEn: string
   flag: string
+  iso: string
   group: "arab" | "international"
 }
 
+// GCC + Arab countries listed first (on BOTH locales), then international
 const allCountryCodes: CountryCodeEntry[] = [
-  // Arab countries
-  { code: "+20", nameAr: "مصر", nameEn: "Egypt", flag: "🇪🇬", group: "arab" },
-  { code: "+966", nameAr: "السعودية", nameEn: "Saudi Arabia", flag: "🇸🇦", group: "arab" },
-  { code: "+971", nameAr: "الإمارات", nameEn: "UAE", flag: "🇦🇪", group: "arab" },
-  { code: "+965", nameAr: "الكويت", nameEn: "Kuwait", flag: "🇰🇼", group: "arab" },
-  { code: "+973", nameAr: "البحرين", nameEn: "Bahrain", flag: "🇧🇭", group: "arab" },
-  { code: "+974", nameAr: "قطر", nameEn: "Qatar", flag: "🇶🇦", group: "arab" },
-  { code: "+968", nameAr: "عمان", nameEn: "Oman", flag: "🇴🇲", group: "arab" },
-  { code: "+962", nameAr: "الأردن", nameEn: "Jordan", flag: "🇯🇴", group: "arab" },
-  { code: "+961", nameAr: "لبنان", nameEn: "Lebanon", flag: "🇱🇧", group: "arab" },
-  { code: "+970", nameAr: "فلسطين", nameEn: "Palestine", flag: "🇵🇸", group: "arab" },
-  { code: "+963", nameAr: "سوريا", nameEn: "Syria", flag: "🇸🇾", group: "arab" },
-  { code: "+964", nameAr: "العراق", nameEn: "Iraq", flag: "🇮🇶", group: "arab" },
-  { code: "+212", nameAr: "المغرب", nameEn: "Morocco", flag: "🇲🇦", group: "arab" },
-  { code: "+213", nameAr: "الجزائر", nameEn: "Algeria", flag: "🇩🇿", group: "arab" },
-  { code: "+216", nameAr: "تونس", nameEn: "Tunisia", flag: "🇹🇳", group: "arab" },
-  { code: "+218", nameAr: "ليبيا", nameEn: "Libya", flag: "🇱🇾", group: "arab" },
-  { code: "+249", nameAr: "السودان", nameEn: "Sudan", flag: "🇸🇩", group: "arab" },
-  { code: "+967", nameAr: "اليمن", nameEn: "Yemen", flag: "🇾🇪", group: "arab" },
+  // GCC countries first (priority order)
+  { code: "+966", nameAr: "السعودية", nameEn: "Saudi Arabia", flag: "🇸🇦", iso: "SA", group: "arab" },
+  { code: "+971", nameAr: "الإمارات", nameEn: "UAE", flag: "🇦🇪", iso: "AE", group: "arab" },
+  { code: "+965", nameAr: "الكويت", nameEn: "Kuwait", flag: "🇰🇼", iso: "KW", group: "arab" },
+  { code: "+974", nameAr: "قطر", nameEn: "Qatar", flag: "🇶🇦", iso: "QA", group: "arab" },
+  { code: "+973", nameAr: "البحرين", nameEn: "Bahrain", flag: "🇧🇭", iso: "BH", group: "arab" },
+  { code: "+968", nameAr: "عمان", nameEn: "Oman", flag: "🇴🇲", iso: "OM", group: "arab" },
+  // Other Arab countries
+  { code: "+20", nameAr: "مصر", nameEn: "Egypt", flag: "🇪🇬", iso: "EG", group: "arab" },
+  { code: "+962", nameAr: "الأردن", nameEn: "Jordan", flag: "🇯🇴", iso: "JO", group: "arab" },
+  { code: "+961", nameAr: "لبنان", nameEn: "Lebanon", flag: "🇱🇧", iso: "LB", group: "arab" },
+  { code: "+970", nameAr: "فلسطين", nameEn: "Palestine", flag: "🇵🇸", iso: "PS", group: "arab" },
+  { code: "+964", nameAr: "العراق", nameEn: "Iraq", flag: "🇮🇶", iso: "IQ", group: "arab" },
+  { code: "+963", nameAr: "سوريا", nameEn: "Syria", flag: "🇸🇾", iso: "SY", group: "arab" },
+  { code: "+967", nameAr: "اليمن", nameEn: "Yemen", flag: "🇾🇪", iso: "YE", group: "arab" },
+  { code: "+212", nameAr: "المغرب", nameEn: "Morocco", flag: "🇲🇦", iso: "MA", group: "arab" },
+  { code: "+213", nameAr: "الجزائر", nameEn: "Algeria", flag: "🇩🇿", iso: "DZ", group: "arab" },
+  { code: "+216", nameAr: "تونس", nameEn: "Tunisia", flag: "🇹🇳", iso: "TN", group: "arab" },
+  { code: "+218", nameAr: "ليبيا", nameEn: "Libya", flag: "🇱🇾", iso: "LY", group: "arab" },
+  { code: "+249", nameAr: "السودان", nameEn: "Sudan", flag: "🇸🇩", iso: "SD", group: "arab" },
   // International countries
-  { code: "+1", nameAr: "الولايات المتحدة", nameEn: "United States", flag: "🇺🇸", group: "international" },
-  { code: "+44", nameAr: "المملكة المتحدة", nameEn: "United Kingdom", flag: "🇬🇧", group: "international" },
-  { code: "+49", nameAr: "ألمانيا", nameEn: "Germany", flag: "🇩🇪", group: "international" },
-  { code: "+33", nameAr: "فرنسا", nameEn: "France", flag: "🇫🇷", group: "international" },
-  { code: "+39", nameAr: "إيطاليا", nameEn: "Italy", flag: "🇮🇹", group: "international" },
-  { code: "+34", nameAr: "إسبانيا", nameEn: "Spain", flag: "🇪🇸", group: "international" },
-  { code: "+31", nameAr: "هولندا", nameEn: "Netherlands", flag: "🇳🇱", group: "international" },
-  { code: "+46", nameAr: "السويد", nameEn: "Sweden", flag: "🇸🇪", group: "international" },
-  { code: "+47", nameAr: "النرويج", nameEn: "Norway", flag: "🇳🇴", group: "international" },
-  { code: "+45", nameAr: "الدنمارك", nameEn: "Denmark", flag: "🇩🇰", group: "international" },
-  { code: "+41", nameAr: "سويسرا", nameEn: "Switzerland", flag: "🇨🇭", group: "international" },
-  { code: "+43", nameAr: "النمسا", nameEn: "Austria", flag: "🇦🇹", group: "international" },
-  { code: "+32", nameAr: "بلجيكا", nameEn: "Belgium", flag: "🇧🇪", group: "international" },
-  { code: "+90", nameAr: "تركيا", nameEn: "Turkey", flag: "🇹🇷", group: "international" },
-  { code: "+91", nameAr: "الهند", nameEn: "India", flag: "🇮🇳", group: "international" },
-  { code: "+86", nameAr: "الصين", nameEn: "China", flag: "🇨🇳", group: "international" },
-  { code: "+81", nameAr: "اليابان", nameEn: "Japan", flag: "🇯🇵", group: "international" },
-  { code: "+82", nameAr: "كوريا الجنوبية", nameEn: "South Korea", flag: "🇰🇷", group: "international" },
-  { code: "+61", nameAr: "أستراليا", nameEn: "Australia", flag: "🇦🇺", group: "international" },
-  { code: "+64", nameAr: "نيوزيلندا", nameEn: "New Zealand", flag: "🇳🇿", group: "international" },
-  { code: "+55", nameAr: "البرازيل", nameEn: "Brazil", flag: "🇧🇷", group: "international" },
-  { code: "+52", nameAr: "المكسيك", nameEn: "Mexico", flag: "🇲🇽", group: "international" },
-  { code: "+7", nameAr: "روسيا", nameEn: "Russia", flag: "🇷🇺", group: "international" },
-  { code: "+27", nameAr: "جنوب أفريقيا", nameEn: "South Africa", flag: "🇿🇦", group: "international" },
-  { code: "+234", nameAr: "نيجيريا", nameEn: "Nigeria", flag: "🇳🇬", group: "international" },
-  { code: "+254", nameAr: "كينيا", nameEn: "Kenya", flag: "🇰🇪", group: "international" },
-  { code: "+60", nameAr: "ماليزيا", nameEn: "Malaysia", flag: "🇲🇾", group: "international" },
-  { code: "+65", nameAr: "سنغافورة", nameEn: "Singapore", flag: "🇸🇬", group: "international" },
-  { code: "+62", nameAr: "إندونيسيا", nameEn: "Indonesia", flag: "🇮🇩", group: "international" },
-  { code: "+63", nameAr: "الفلبين", nameEn: "Philippines", flag: "🇵🇭", group: "international" },
-  { code: "+66", nameAr: "تايلاند", nameEn: "Thailand", flag: "🇹🇭", group: "international" },
-  { code: "+48", nameAr: "بولندا", nameEn: "Poland", flag: "🇵🇱", group: "international" },
-  { code: "+351", nameAr: "البرتغال", nameEn: "Portugal", flag: "🇵🇹", group: "international" },
-  { code: "+30", nameAr: "اليونان", nameEn: "Greece", flag: "🇬🇷", group: "international" },
-  { code: "+353", nameAr: "أيرلندا", nameEn: "Ireland", flag: "🇮🇪", group: "international" },
-  { code: "+358", nameAr: "فنلندا", nameEn: "Finland", flag: "🇫🇮", group: "international" },
-  { code: "+92", nameAr: "باكستان", nameEn: "Pakistan", flag: "🇵🇰", group: "international" },
-  { code: "+880", nameAr: "بنغلاديش", nameEn: "Bangladesh", flag: "🇧🇩", group: "international" },
+  { code: "+1", nameAr: "الولايات المتحدة", nameEn: "United States", flag: "🇺🇸", iso: "US", group: "international" },
+  { code: "+44", nameAr: "المملكة المتحدة", nameEn: "United Kingdom", flag: "🇬🇧", iso: "GB", group: "international" },
+  { code: "+49", nameAr: "ألمانيا", nameEn: "Germany", flag: "🇩🇪", iso: "DE", group: "international" },
+  { code: "+33", nameAr: "فرنسا", nameEn: "France", flag: "🇫🇷", iso: "FR", group: "international" },
+  { code: "+39", nameAr: "إيطاليا", nameEn: "Italy", flag: "🇮🇹", iso: "IT", group: "international" },
+  { code: "+34", nameAr: "إسبانيا", nameEn: "Spain", flag: "🇪🇸", iso: "ES", group: "international" },
+  { code: "+31", nameAr: "هولندا", nameEn: "Netherlands", flag: "🇳🇱", iso: "NL", group: "international" },
+  { code: "+90", nameAr: "تركيا", nameEn: "Turkey", flag: "🇹🇷", iso: "TR", group: "international" },
+  { code: "+91", nameAr: "الهند", nameEn: "India", flag: "🇮🇳", iso: "IN", group: "international" },
+  { code: "+86", nameAr: "الصين", nameEn: "China", flag: "🇨🇳", iso: "CN", group: "international" },
+  { code: "+81", nameAr: "اليابان", nameEn: "Japan", flag: "🇯🇵", iso: "JP", group: "international" },
+  { code: "+82", nameAr: "كوريا الجنوبية", nameEn: "South Korea", flag: "🇰🇷", iso: "KR", group: "international" },
+  { code: "+61", nameAr: "أستراليا", nameEn: "Australia", flag: "🇦🇺", iso: "AU", group: "international" },
+  { code: "+55", nameAr: "البرازيل", nameEn: "Brazil", flag: "🇧🇷", iso: "BR", group: "international" },
+  { code: "+7", nameAr: "روسيا", nameEn: "Russia", flag: "🇷🇺", iso: "RU", group: "international" },
+  { code: "+27", nameAr: "جنوب أفريقيا", nameEn: "South Africa", flag: "🇿🇦", iso: "ZA", group: "international" },
+  { code: "+60", nameAr: "ماليزيا", nameEn: "Malaysia", flag: "🇲🇾", iso: "MY", group: "international" },
+  { code: "+65", nameAr: "سنغافورة", nameEn: "Singapore", flag: "🇸🇬", iso: "SG", group: "international" },
+  { code: "+62", nameAr: "إندونيسيا", nameEn: "Indonesia", flag: "🇮🇩", iso: "ID", group: "international" },
+  { code: "+92", nameAr: "باكستان", nameEn: "Pakistan", flag: "🇵🇰", iso: "PK", group: "international" },
+  { code: "+234", nameAr: "نيجيريا", nameEn: "Nigeria", flag: "🇳🇬", iso: "NG", group: "international" },
+  { code: "+46", nameAr: "السويد", nameEn: "Sweden", flag: "🇸🇪", iso: "SE", group: "international" },
+  { code: "+47", nameAr: "النرويج", nameEn: "Norway", flag: "🇳🇴", iso: "NO", group: "international" },
+  { code: "+45", nameAr: "الدنمارك", nameEn: "Denmark", flag: "🇩🇰", iso: "DK", group: "international" },
+  { code: "+41", nameAr: "سويسرا", nameEn: "Switzerland", flag: "🇨🇭", iso: "CH", group: "international" },
+  { code: "+43", nameAr: "النمسا", nameEn: "Austria", flag: "🇦🇹", iso: "AT", group: "international" },
+  { code: "+32", nameAr: "بلجيكا", nameEn: "Belgium", flag: "🇧🇪", iso: "BE", group: "international" },
+  { code: "+64", nameAr: "نيوزيلندا", nameEn: "New Zealand", flag: "🇳🇿", iso: "NZ", group: "international" },
+  { code: "+52", nameAr: "المكسيك", nameEn: "Mexico", flag: "🇲🇽", iso: "MX", group: "international" },
+  { code: "+254", nameAr: "كينيا", nameEn: "Kenya", flag: "🇰🇪", iso: "KE", group: "international" },
+  { code: "+63", nameAr: "الفلبين", nameEn: "Philippines", flag: "🇵🇭", iso: "PH", group: "international" },
+  { code: "+66", nameAr: "تايلاند", nameEn: "Thailand", flag: "🇹🇭", iso: "TH", group: "international" },
+  { code: "+48", nameAr: "بولندا", nameEn: "Poland", flag: "🇵🇱", iso: "PL", group: "international" },
+  { code: "+351", nameAr: "البرتغال", nameEn: "Portugal", flag: "🇵🇹", iso: "PT", group: "international" },
+  { code: "+30", nameAr: "اليونان", nameEn: "Greece", flag: "🇬🇷", iso: "GR", group: "international" },
+  { code: "+353", nameAr: "أيرلندا", nameEn: "Ireland", flag: "🇮🇪", iso: "IE", group: "international" },
+  { code: "+358", nameAr: "فنلندا", nameEn: "Finland", flag: "🇫🇮", iso: "FI", group: "international" },
+  { code: "+880", nameAr: "بنغلاديش", nameEn: "Bangladesh", flag: "🇧🇩", iso: "BD", group: "international" },
 ]
 
 const ConsultationSection = ({ locale }: { locale: Locale }) => {
@@ -253,6 +257,27 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
   const codeDropdownRef = useRef<HTMLDivElement>(null)
   const codeSearchInputRef = useRef<HTMLInputElement>(null)
 
+  // Auto-detect user's country via IP geolocation
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(5000) })
+        if (!res.ok) return
+        const data = await res.json()
+        const countryIso = data.country_code // e.g. "SA", "AE", "US"
+        if (countryIso) {
+          const match = allCountryCodes.find((c) => c.iso === countryIso)
+          if (match) {
+            setFormData((prev) => ({ ...prev, countryCode: match.code }))
+          }
+        }
+      } catch {
+        // Silently fail - keep default country code
+      }
+    }
+    detectCountry()
+  }, [])
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -272,12 +297,12 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
     }
   }, [codeDropdownOpen])
 
-  // Order countries based on locale: Arab first for AR, International first for EN
+  // Order: Arab/GCC countries always first on BOTH locales, then international
   const orderedCountries = useMemo(() => {
     const arab = allCountryCodes.filter((c) => c.group === "arab")
     const intl = allCountryCodes.filter((c) => c.group === "international")
-    return isRtl ? [...arab, ...intl] : [...intl, ...arab]
-  }, [isRtl])
+    return [...arab, ...intl]
+  }, [])
 
   // Filter countries based on search
   const filteredCountries = useMemo(() => {
@@ -303,6 +328,7 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
 
     try {
       // Step 1: Send data to Google Sheets (if configured) — includes Language field
+      // Data is sent as JSON with explicit field names matching the Google Sheet columns
       if (GOOGLE_SHEETS_WEBHOOK !== "YOUR_WEBHOOK_URL_HERE") {
         await fetch(GOOGLE_SHEETS_WEBHOOK, {
           method: "POST",
@@ -311,7 +337,13 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...formData,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            countryCode: formData.countryCode,
+            phoneNumber: formData.phoneNumber,
+            websiteUrl: formData.websiteUrl,
+            budget: formData.budget,
             language: languageValue,
           }),
         })
@@ -555,13 +587,13 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
                                   {!codeSearch.trim() && (
                                     <>
                                       <div className={`px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 sticky top-0 ${isRtl ? "text-right" : "text-left"}`}>
-                                        {isRtl ? "الدول العربية" : (locale === "ar" ? "الدول العربية" : "International")}
+                                        {isRtl ? "الدول العربية" : "Arab Countries"}
                                       </div>
                                       {orderedCountries
-                                        .filter((c) => c.group === (isRtl ? "arab" : "international"))
+                                        .filter((c) => c.group === "arab")
                                         .map((country) => (
                                           <button
-                                            key={`${country.group}-${country.code}`}
+                                            key={`arab-${country.code}`}
                                             type="button"
                                             onClick={() => {
                                               handleInputChange("countryCode", country.code)
@@ -578,13 +610,13 @@ const ConsultationSection = ({ locale }: { locale: Locale }) => {
                                           </button>
                                         ))}
                                       <div className={`px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 sticky top-0 ${isRtl ? "text-right" : "text-left"}`}>
-                                        {isRtl ? "الدول الدولية" : (locale === "ar" ? "الدول الدولية" : "Arab Countries")}
+                                        {isRtl ? "الدول الدولية" : "International"}
                                       </div>
                                       {orderedCountries
-                                        .filter((c) => c.group === (isRtl ? "international" : "arab"))
+                                        .filter((c) => c.group === "international")
                                         .map((country) => (
                                           <button
-                                            key={`${country.group}-${country.code}`}
+                                            key={`intl-${country.code}`}
                                             type="button"
                                             onClick={() => {
                                               handleInputChange("countryCode", country.code)
