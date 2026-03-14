@@ -61,6 +61,12 @@ const nextConfig = {
         destination: '/ar/seo-company',
         permanent: true,
       },
+      // Arabic SEO agency English page — redirect Arabic locale to English
+      {
+        source: '/ar/arabic-seo-agency',
+        destination: '/arabic-seo-agency',
+        permanent: true,
+      },
     ]
   },
   async headers() {

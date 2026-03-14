@@ -103,7 +103,7 @@ const Navbar = ({ locale }: { locale: Locale }) => {
             <Link href={getLocalePath("/", locale)} className={linkClass}>
               {t.home}
             </Link>
-            <Link href={getLocalePath("/seo-company", locale)} className={linkClass}>
+            <Link href={isArabic ? "/ar/seo-company" : "/arabic-seo-agency"} className={linkClass}>
               {t.services}
             </Link>
             <Link href={getLocalePath("/seo-pricing", locale)} className={linkClass}>
@@ -178,7 +178,7 @@ const Navbar = ({ locale }: { locale: Locale }) => {
             <Link href={getLocalePath("/", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
               {t.home}
             </Link>
-            <Link href={getLocalePath("/seo-company", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+            <Link href={isArabic ? "/ar/seo-company" : "/arabic-seo-agency"} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
               {t.services}
             </Link>
             <Link href={getLocalePath("/seo-pricing", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
