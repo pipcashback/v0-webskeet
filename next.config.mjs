@@ -48,6 +48,13 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Old Arabic blog posts were at /blog/:slug before bilingual migration.
+      // Redirect to /ar/blog/:slug (301). Does NOT affect /blog index page.
+      {
+        source: '/blog/:slug',
+        destination: '/ar/blog/:slug',
+        permanent: true,
+      },
     ]
   },
   async headers() {
