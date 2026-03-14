@@ -31,82 +31,79 @@ import {
   Plane,
   Briefcase,
   ShoppingBag,
-  ArrowLeft,
-  ChevronLeft,
+  ChevronRight,
+  Smartphone,
 } from "lucide-react"
 import Link from "next/link"
 import type { Locale } from "@/i18n/config"
 import ConsultationSection from "@/components/consultation-section"
 
-export default function SeoCompanyClient({ locale }: { locale: Locale }) {
-  const isArabic = locale === "ar"
-  const lp = (path: string) => (locale === "ar" ? `/ar${path}` : path)
-
+export default function ArabicSeoAgencyClient({ locale }: { locale: Locale }) {
   // --- Services data ---
   const services = [
     {
       icon: Settings,
-      title: "السيو التقني (Technical SEO)",
+      title: "Technical SEO for Arabic Websites",
       color: "bg-blue-500",
       bullets: [
-        "مشاكل الزحف والفهرسة التي تمنع جوجل من رؤية صفحاتك",
-        "سرعة الموقع وCore Web Vitals — خاصة على الموبايل حيث 90-95% من ترافيك المنطقة",
-        "بنية الروابط الداخلية وتوزيع السلطة بين الصفحات",
-        "تطبيق Schema Markup الصحيح (Organization, Service, FAQ, Product)",
-        "إعدادات hreflang للمواقع ثنائية اللغة",
-        "ملفات robots.txt وsitemap.xml المحسّنة",
+        "Crawling and indexing issues preventing Google from seeing your Arabic pages",
+        "Core Web Vitals optimization — especially critical for the mobile-dominant MENA market",
+        "Proper hreflang implementation for bilingual and multilingual sites",
+        "RTL/LTR technical setup and CSS logical properties",
+        "Schema markup (Organization, Service, FAQ, Product) in Arabic",
+        "XML sitemaps with correct hreflang annotations",
       ],
-      description: "الأساس الذي يُبنى عليه كل شيء. نفحص موقعك بأدوات مثل Screaming Frog وSitebulb ونصلح:",
-      footer: "لا نكتفي بتقديم تقرير — نعمل مع فريق التطوير عندك لتنفيذ الإصلاحات فعلياً.",
+      description: "The foundation everything else is built on. We audit your site with Screaming Frog and Sitebulb and fix:",
+      footer: "We work directly with your development team to implement fixes — not just hand over a PDF report.",
     },
     {
       icon: FileText,
-      title: "سيو المحتوى وبحث الكلمات المفتاحية",
+      title: "Arabic Keyword Research & Content Strategy",
       color: "bg-green-500",
       bullets: [
-        "بحث كلمات مفتاحية متقدم بالعربية والإنجليزية مع فهم نية البحث",
-        "كتابة محتوى عربي احترافي بالفصحى المعاصرة — مفهوم في كل الدول العربية",
-        "تحسين المحتوى الموجود (On-Page SEO): العناوين، الوصف، الترويسات، الروابط الداخلية",
-        "بناء مراكز محتوى (Topic Clusters) تثبت سلطتك الموضوعية أمام جوجل",
-        "تحسين صفحات المنتجات والفئات للمتاجر الإلكترونية",
+        "Advanced bilingual keyword research with search intent mapping",
+        "Professional Arabic content written in Modern Standard Arabic — understood across all Arabic-speaking countries",
+        "On-page optimization: titles, descriptions, headers, internal linking",
+        "Topic cluster architecture to build topical authority",
+        "Content gap analysis against Arabic and English competitors",
       ],
-      description: "نبني استراتيجية محتوى تستهدف الكلمات التي يبحث عنها عملاؤك فعلاً:",
+      description: "We build content strategies targeting keywords your Arabic-speaking customers actually use:",
     },
     {
       icon: ShoppingCart,
-      title: "سيو المتاجر الإلكترونية",
+      title: "E-commerce SEO for Arabic Markets",
       color: "bg-purple-500",
       bullets: [
-        "Shopify — تحسين البنية التقنية، صفحات المنتجات، والمجموعات",
-        "سلة — المنصة الأكثر انتشاراً في السعودية، نفهم قيودها التقنية وكيفية تحسينها",
-        "زد — سيو متخصص للمتاجر السعودية على منصة زد",
-        "WooCommerce — تحسين الأداء والبنية للمتاجر المبنية على WordPress",
+        "Shopify — Technical optimization, product pages, and collections for Arabic markets",
+        "Salla (سلة) — The most popular platform in Saudi Arabia; we understand its technical limitations",
+        "Zid (زد) — Specialized SEO for Saudi-focused stores",
+        "WooCommerce — Performance and structure optimization for Arabic WordPress stores",
       ],
-      description: "خبرة مباشرة مع منصات التجارة الإلكترونية الأكثر استخداماً في المنطقة:",
-      link: { href: "/ar/ecommerce-seo", label: "اعرف المزيد عن خدمات سيو المتاجر الإلكترونية" },
+      description: "Direct experience with the most-used e-commerce platforms in the region:",
     },
     {
       icon: Link2,
-      title: "بناء الروابط (Link Building)",
+      title: "Arabic Link Building",
       color: "bg-orange-500",
       bullets: [
-        "جيست بوست على مواقع عربية بـ Domain Rating +50",
-        "تسجيل في أدلة الأعمال الخليجية والدولية (Clutch, GoodFirms, DesignRush)",
-        "استراتيجيات Digital PR للحصول على تغطية في المنشورات الخليجية",
-        "بناء أصول قابلة للربط (تقارير، إنفوجرافيكس، أدوات مجانية)",
+        "Guest posting on Arabic sites with Domain Rating 50+",
+        "Registration in GCC business directories and international agency directories (Clutch, GoodFirms, DesignRush)",
+        "Digital PR strategies for coverage in Gulf publications (Gulf News, Arab News, The National)",
+        "Linkable asset creation (reports, infographics, free tools)",
       ],
-      description: "نبني روابط خلفية حقيقية من مواقع عربية وإنجليزية ذات سلطة عالية:",
+      description: "We build real backlinks from high-authority Arabic and English websites:",
+      footer: "Arabic guest posting is significantly cheaper and less competitive than English — a structural advantage for building authority quickly.",
     },
     {
       icon: Brain,
-      title: "تحسين الظهور في محركات البحث بالذكاء الاصطناعي (AI SEO)",
+      title: "AI Search Visibility (LLM SEO)",
       color: "bg-pink-500",
       bullets: [
-        "تحسين المحتوى لمحركات LLM (Large Language Models)",
-        "بناء E-E-A-T (الخبرة، التخصص، السلطة، الثقة)",
-        "تنظيم البيانات المهيكلة لتسهيل فهم الذكاء الاصطناعي لمحتواك",
+        "Content optimization for Large Language Models",
+        "E-E-A-T signals (Experience, Expertise, Authority, Trust)",
+        "Structured data to help AI understand your Arabic content",
       ],
-      description: "مع تزايد استخدام ChatGPT وGemini وPerplexity في المنطقة، نعمل على جعل علامتك التجارية تظهر في نتائج البحث بالذكاء الاصطناعي:",
+      description: "With ChatGPT, Gemini, and Perplexity usage growing rapidly in the Gulf, we optimize your brand's visibility in AI-powered search results:",
     },
   ]
 
@@ -114,122 +111,122 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
   const processSteps = [
     {
       icon: ClipboardCheck,
-      title: "الفحص والتحليل الشامل",
-      description: "نبدأ بفحص موقعك تقنياً وتحليل منافسيك وتحديد فرص الكلمات المفتاحية. تحصل على تقرير مفصّل بالمشاكل والفرص خلال أسبوع.",
+      title: "Comprehensive Audit",
+      description: "We start with a full technical audit, competitor analysis, and keyword opportunity mapping. You receive a detailed report within one week.",
     },
     {
       icon: Lightbulb,
-      title: "الاستراتيجية والخطة الشهرية",
-      description: "نبني خطة سيو مخصصة لموقعك تشمل: الأولويات التقنية، خطة المحتوى، وخطة بناء الروابط — مع جدول زمني واضح.",
+      title: "Strategy & Monthly Plan",
+      description: "We build a custom SEO plan covering: technical priorities, content roadmap, and link building plan — with clear timelines and KPIs.",
     },
     {
       icon: Rocket,
-      title: "التنفيذ المباشر",
-      description: "لا نكتفي بالتوصيات. نعمل مع فريقك التقني لتنفيذ التحسينات. نكتب المحتوى. نبني الروابط. نتابع الفهرسة.",
+      title: "Hands-On Execution",
+      description: "We don't stop at recommendations. We work with your dev team to implement changes. We write the content. We build the links. We monitor indexing.",
     },
     {
       icon: BarChart3,
-      title: "القياس والتحسين المستمر",
-      description: "تقرير شهري شفاف يوضح: الترتيب، الترافيك، التحويلات، والخطوات القادمة. نعدّل الاستراتيجية بناءً على البيانات.",
+      title: "Measurement & Optimization",
+      description: "Monthly reports showing: rankings, traffic, conversions, and next steps. We adjust strategy based on data, not assumptions.",
     },
   ]
 
-  // --- Why Webskeet differentiators ---
+  // --- Why WebSkeet differentiators ---
   const differentiators = [
     {
       icon: Clock,
-      title: "+8 سنوات خبرة",
-      description: "خبرة +8 سنوات في السيو التقني والمحتوى. ليس فقط توصيات نظرية — نفّذنا مئات المشاريع لعملاء في مصر والخليج وأوروبا.",
+      title: "8+ Years of Experience",
+      description: "Not theoretical advice — we've executed hundreds of projects for clients across Egypt, the Gulf, and Europe.",
     },
     {
       icon: Users,
-      title: "متحدثون أصليون للعربية",
-      description: "نفهم كيف يبحث المستخدم العربي، وما الفرق بين \"شركة سيو\" و\"شركة تحسين محركات البحث\" في نية البحث. هذا الفهم لا يمكن أن تحصل عليه من وكالة تترجم محتوى إنجليزي.",
+      title: "Native Arabic Speakers",
+      description: "We understand how Arabic users search, what different keyword variations mean in search intent, and how dialect differences affect targeting. You can't get this from an agency that translates English content.",
     },
     {
       icon: Globe,
-      title: "نطبّق ما نبيع",
-      description: "webskeet.com نفسه موقع ثنائي اللغة مبني بأفضل ممارسات السيو — hreflang صحيح، بنية مجلدات فرعية، وسرعة تحميل ممتازة. نطبّق على أنفسنا ما نبيعه لعملائنا.",
+      title: "Our Website Is Proof of Concept",
+      description: "webskeet.com itself is a bilingual site built with SEO best practices — correct hreflang, subdirectory architecture, excellent load speed. We practice what we sell.",
     },
     {
       icon: Code,
-      title: "نعمل مع المطورين مباشرة",
-      description: "كثير من شركات السيو ترسل تقرير PDF وتنتهي مهمتها. نحن نجلس مع المطورين عندك، نراجع الكود، ونتأكد أن التحسينات تتنفذ فعلاً.",
+      title: "We Work With Your Dev Team",
+      description: "Many SEO agencies send a PDF report and call it done. We sit with your developers, review code, and ensure implementations actually happen.",
     },
     {
       icon: Building2,
-      title: "مسجّلون في مصر والإمارات",
-      description: "وجود قانوني في السوقين يعني فهم محلي عميق وسهولة التعاقد لعملاء الخليج.",
+      title: "Registered in Egypt & UAE",
+      description: "Legal presence in both markets means deep local understanding and easy contracting for Gulf clients.",
     },
   ]
 
   // --- Industries ---
   const industries = [
-    { icon: ShoppingBag, title: "التجارة الإلكترونية", description: "متاجر Shopify، سلة، زد، WooCommerce" },
-    { icon: Building2, title: "العقارات", description: "شركات التطوير العقاري والوسطاء في الخليج" },
-    { icon: Stethoscope, title: "الرعاية الصحية", description: "المستشفيات والعيادات والصيدليات الإلكترونية" },
-    { icon: Cpu, title: "التقنية وSaaS", description: "شركات البرمجيات والخدمات السحابية" },
-    { icon: Plane, title: "السياحة والضيافة", description: "الفنادق وشركات السياحة ووكالات السفر" },
-    { icon: Briefcase, title: "الخدمات المهنية", description: "المحامين والمحاسبين والمستشارين" },
+    { icon: ShoppingBag, title: "E-commerce", description: "Shopify, Salla, Zid, WooCommerce stores" },
+    { icon: Building2, title: "Real Estate", description: "Property developers and brokers across the GCC" },
+    { icon: Stethoscope, title: "Healthcare", description: "Hospitals, clinics, and online pharmacies" },
+    { icon: Cpu, title: "Technology & SaaS", description: "Software companies and cloud services" },
+    { icon: Plane, title: "Tourism & Hospitality", description: "Hotels, travel companies, and agencies" },
+    { icon: Briefcase, title: "Professional Services", description: "Law firms, accounting firms, consultancies" },
   ]
 
   // --- Geographic coverage ---
   const geoLocations = [
     {
-      country: "السعودية",
-      cities: "الرياض، جدة، الدمام، مكة، المدينة",
-      link: "/ar/seo-saudi-arabia",
-      linkLabel: "خدمات سيو في السعودية",
+      country: "Saudi Arabia",
+      cities: "Riyadh, Jeddah, Dammam, Mecca, Medina",
+      link: "/seo-saudi-arabia",
+      linkLabel: "SEO Services in Saudi Arabia",
     },
     {
-      country: "الإمارات",
-      cities: "دبي، أبوظبي، الشارقة",
-      link: "/ar/seo-uae",
-      linkLabel: "خدمات سيو في الإمارات",
+      country: "UAE",
+      cities: "Dubai, Abu Dhabi, Sharjah",
+      link: "/seo-uae",
+      linkLabel: "SEO Services in UAE",
     },
     {
-      country: "قطر",
-      cities: "الدوحة",
-      link: "/ar/seo-qatar",
-      linkLabel: "خدمات سيو في قطر",
+      country: "Qatar",
+      cities: "Doha",
+      link: "/seo-qatar",
+      linkLabel: "SEO Services in Qatar",
     },
     {
-      country: "الكويت، البحرين، عُمان",
+      country: "Kuwait, Bahrain, Oman",
       cities: "",
     },
     {
-      country: "مصر",
-      cities: "القاهرة، الإسكندرية",
+      country: "Egypt",
+      cities: "Cairo, Alexandria",
     },
   ]
 
   // --- FAQ ---
   const faqs = [
     {
-      question: "كم تكلفة خدمات السيو الشهرية؟",
-      answer: "تختلف التكلفة حسب حجم الموقع والمنافسة في مجالك. نقدم خططاً شهرية تبدأ من 5,000 درهم وتصل إلى 25,000 درهم للشركات الكبرى. نبدأ دائماً باستشارة مجانية لفهم احتياجاتك قبل تقديم عرض سعر.",
-      link: { href: "/ar/seo-pricing", label: "اطلع على صفحة الأسعار" },
+      question: "Why can't I just translate my English SEO strategy into Arabic?",
+      answer: "Arabic SEO requires fundamentally different keyword research, content structure, and technical implementation. Arabic morphology creates dozens of keyword variations from a single root word, search volumes are consistently underreported by 2-5x in standard tools, and RTL layout requirements affect Core Web Vitals. Translation alone misses all of this.",
     },
     {
-      question: "كم من الوقت يحتاج السيو لتظهر النتائج؟",
-      answer: "عادةً تبدأ النتائج الأولية بالظهور خلال 3-4 أشهر، والنتائج القوية خلال 6-12 شهر. السيو استثمار طويل المدى — لكن عوائده تتراكم مع الوقت بعكس الإعلانات المدفوعة التي تتوقف فور إيقاف الميزانية.",
+      question: "How much does Arabic SEO cost?",
+      answer: "Our monthly retainers range from $2,200 to $5,500 depending on scope, industry competitiveness, and whether bilingual optimization is needed. We also offer one-time SEO audits starting at $815 as an entry point. We always start with a free consultation to understand your goals.",
+      link: { href: "/seo-pricing", label: "View our pricing" },
     },
     {
-      question: "هل تقدمون ضمان الصفحة الأولى؟",
-      answer: "لا. أي شركة سيو تضمن الصفحة الأولى إما تستخدم أساليب مخالفة لسياسات جوجل أو تستهدف كلمات بدون منافسة. نحن نقدم شيئاً أفضل: شفافية كاملة في التقارير الشهرية، واستراتيجية مبنية على بيانات حقيقية، والتزام بتحسين مستمر.",
+      question: "Do you work with companies outside the Middle East?",
+      answer: "Yes. We work with European, American, and international companies expanding into Arabic-speaking markets. Our bilingual team bridges the gap between Western business expectations and Arabic search behavior.",
+      link: { href: "/ar/seo-company", label: "النسخة العربية" },
     },
     {
-      question: "ما الفرق بين السيو والإعلانات المدفوعة (PPC)؟",
-      answer: "الإعلانات المدفوعة تعطيك نتائج فورية لكنها تتوقف فور إيقاف الميزانية. السيو يحتاج وقتاً أطول لكن نتائجه دائمة — الترافيك العضوي يستمر في النمو حتى بعد انتهاء العقد. الاستراتيجية المثلى تجمع بين الاثنين.",
+      question: "How long does it take to see results from Arabic SEO?",
+      answer: "Initial improvements typically appear within 3-4 months, with significant results in 6-12 months. Arabic search markets generally have lower competition than English, so results can come faster than you might expect.",
     },
     {
-      question: "هل تناسب خدماتكم الشركات الصغيرة؟",
-      answer: "نعمل أساساً مع الشركات المتوسطة والكبيرة التي تبحث عن نتائج حقيقية ومستعدة للاستثمار في السيو. إذا كانت ميزانيتك محدودة، يمكنك البدء بفحص سيو شامل لمرة واحدة يعطيك خارطة طريق واضحة.",
+      question: "Can you handle both Arabic and English SEO for the same website?",
+      answer: "Absolutely — bilingual SEO is our core specialty. We implement proper hreflang tags, subdirectory architecture, and separate keyword strategies for each language while maintaining unified domain authority.",
     },
     {
-      question: "هل تعملون مع شركات خارج المنطقة العربية؟",
-      answer: "نعم. نخدم شركات أوروبية وأمريكية تدخل الأسواق العربية وتحتاج خبرة سيو عربي أصيل.",
-      link: { href: "/arabic-seo-agency", label: "Arabic SEO Agency" },
+      question: "Do you guarantee first-page rankings?",
+      answer: "No. Any agency guaranteeing specific rankings is either using practices that violate Google's guidelines or targeting keywords with zero competition. We offer something better: complete transparency in monthly reporting, data-driven strategy, and a commitment to continuous improvement.",
     },
   ]
 
@@ -237,18 +234,23 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
   const whyArabicSeoCards = [
     {
       icon: Search,
-      title: "الكلمات العربية مختلفة",
-      description: "كلمة واحدة بالعربي ممكن يكون لها عشرات الصيغ. أدوات مثل Semrush وAhrefs تقلل حجم البحث العربي الفعلي بـ 2 إلى 5 أضعاف.",
+      title: "Arabic Keywords Are Different",
+      description: "A single Arabic root word generates dozens of searchable variations. Tools like Semrush and Ahrefs underreport Arabic search volumes by 2-5x — the real opportunity is far larger than the data suggests.",
     },
     {
       icon: Code,
-      title: "البنية التقنية ثنائية اللغة",
-      description: "تطبيق hreflang بشكل صحيح، التعامل مع RTL، واختيار بنية المجلدات الفرعية المناسبة — كل هذه تفاصيل تؤثر مباشرة على ترتيبك.",
+      title: "Bilingual Architecture Requires Precision",
+      description: "Implementing hreflang correctly, managing RTL/LTR layouts, choosing the right subdirectory structure — these technical details directly impact your rankings. 67% of hreflang implementations contain errors.",
     },
     {
       icon: Globe,
-      title: "أقل من 1% محتوى عربي",
-      description: "رغم وجود أكثر من 440 مليون ناطق بالعربية — هذا يعني منافسة أقل بكثير وفرص أكبر للتصدّر.",
+      title: "Less Than 1% Arabic Content Online",
+      description: "Despite 440+ million Arabic speakers, Arabic content makes up less than 1% of the internet. This means dramatically lower competition and faster ranking opportunities.",
+    },
+    {
+      icon: Smartphone,
+      title: "90-95% Mobile Traffic in MENA",
+      description: "Your Arabic pages need to be built mobile-first, with proper RTL rendering, appropriate Arabic font sizing (20% larger than English equivalents), and excellent Core Web Vitals scores.",
     },
   ]
 
@@ -263,33 +265,33 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-balance">
-              شركة سيو — خدمات تحسين محركات البحث الاحترافية
+              Arabic SEO Agency — Expert Search Optimization for Arabic Markets
             </h1>
             <p className="text-lg md:text-xl text-white/90 mb-4 leading-relaxed max-w-3xl mx-auto">
-              هل موقعك يظهر في الصفحة الثانية أو الثالثة من جوجل؟ هل منافسوك يحصلون على العملاء الذين يبحثون عن خدماتك؟
+              Expanding into Arabic-speaking markets? Your English SEO strategy won't work in Arabic. Different keyword behavior, different search patterns, different technical requirements.
             </p>
             <p className="text-base md:text-lg text-white/80 mb-4 leading-relaxed max-w-3xl mx-auto">
-              ويب سكيت شركة سيو متخصصة في تحسين محركات البحث للمواقع العربية والإنجليزية. نساعد الشركات في الخليج والشرق الأوسط على تحقيق ظهور حقيقي في نتائج البحث، وتحويل هذا الظهور إلى عملاء وإيرادات.
+              WebSkeet is an Arabic SEO agency built by native Arabic speakers with 8+ years of hands-on technical SEO experience. We help international companies and GCC businesses achieve real visibility in Arabic search results — and turn that visibility into revenue.
             </p>
             <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto">
-              لا نبيع وعوداً — نعمل مباشرة مع فريقك التقني لتنفيذ استراتيجيات سيو مبنية على البيانات، ونقيس النتائج كل شهر بأرقام واضحة.
+              We don't just translate keywords. We build Arabic search strategies from the ground up, grounded in how Arabic speakers actually search.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
               <a
                 href="#consultation"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg bg-white text-blue-900 hover:bg-gray-100 transition-colors w-full sm:w-auto"
               >
-                احجز استشارة مجانية
+                Book a Free Consultation
               </a>
               <a
                 href="#services"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg border-2 border-white text-white hover:bg-white hover:text-blue-900 transition-colors w-full sm:w-auto"
               >
-                تعرف على خدماتنا
+                Our Services
               </a>
             </div>
             <p className="text-sm text-white/60 mt-4">
-              نحلل موقعك ونوريك فرص النمو خلال 30 دقيقة.
+              We'll analyze your Arabic search opportunity in 30 minutes.
             </p>
           </div>
         </div>
@@ -299,14 +301,14 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
       <section className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-            لماذا تحتاج شركة سيو متخصصة في المحتوى العربي؟
+            Why Arabic SEO Requires a Specialist Agency
           </h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-            أغلب شركات السيو في المنطقة تعمل بالإنجليزية أساساً وتضيف العربية كخدمة ثانوية. المشكلة؟ السيو العربي مختلف جذرياً عن الإنجليزي:
+            Most SEO agencies treat Arabic as an afterthought — translate the English keywords, swap the content, done. Here's why that approach fails:
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {whyArabicSeoCards.map((card, index) => (
             <Card key={index} className="hover:shadow-xl transition-all duration-300 border-t-4 border-t-webskeet-blue">
               <CardContent className="p-8 text-center">
@@ -322,18 +324,18 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
 
         <div className="bg-webskeet-blue/5 rounded-2xl p-6 md:p-8 text-center max-w-3xl mx-auto">
           <p className="text-lg font-semibold text-webskeet-blue">
-            في ويب سكيت، السيو العربي ليس خدمة إضافية — هو تخصصنا الأساسي.
+            At WebSkeet, Arabic SEO isn't a side service — it's our core specialty.
           </p>
         </div>
       </section>
 
       {/* ====== Mid-page CTA ====== */}
       <section className="container mx-auto px-4 pb-8">
-        <div className="bg-gradient-to-l from-webskeet-gold/20 to-webskeet-blue/10 rounded-2xl p-8 text-center">
-          <p className="text-xl font-bold text-webskeet-blue mb-4">هل تريد معرفة فرص السيو لموقعك؟</p>
+        <div className="bg-gradient-to-r from-webskeet-gold/20 to-webskeet-blue/10 rounded-2xl p-8 text-center">
+          <p className="text-xl font-bold text-webskeet-blue mb-4">Want to discover your Arabic SEO opportunities?</p>
           <Link href="#consultation">
             <Button size="lg" className="bg-webskeet-blue hover:bg-webskeet-blue/90 text-white text-lg px-8 py-6">
-              احجز استشارة مجانية الآن
+              Book a Free Consultation
             </Button>
           </Link>
         </div>
@@ -344,7 +346,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-              خدمات تحسين محركات البحث التي نقدمها
+              Our Arabic SEO Services
             </h2>
           </div>
 
@@ -372,15 +374,6 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
                       {service.footer && (
                         <p className="text-gray-700 font-medium mt-4 bg-gray-50 p-3 rounded-lg">{service.footer}</p>
                       )}
-                      {service.link && (
-                        <Link
-                          href={service.link.href}
-                          className="inline-flex items-center gap-2 text-webskeet-blue hover:underline font-medium mt-4"
-                        >
-                          {service.link.label}
-                          <ChevronLeft className="h-4 w-4" />
-                        </Link>
-                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -394,7 +387,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
       <section className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-            كيف نعمل — منهجيتنا في 4 خطوات
+            How We Work — Our 4-Step Process
           </h2>
         </div>
 
@@ -402,7 +395,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="hidden md:block">
           <div className="relative">
             {/* Connecting line */}
-            <div className="absolute top-16 right-[12.5%] left-[12.5%] h-1 bg-gradient-to-l from-webskeet-blue to-webskeet-gold rounded-full" />
+            <div className="absolute top-16 left-[12.5%] right-[12.5%] h-1 bg-gradient-to-r from-webskeet-blue to-webskeet-gold rounded-full" />
             <div className="grid grid-cols-4 gap-6 relative z-10">
               {processSteps.map((step, index) => (
                 <div key={index} className="text-center">
@@ -446,7 +439,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-              لماذا ويب سكيت وليس وكالة أخرى؟
+              Why Choose WebSkeet as Your Arabic SEO Agency?
             </h2>
           </div>
 
@@ -474,10 +467,10 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
       <section className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-            القطاعات التي نخدمها
+            Industries We Serve
           </h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            نقدم خدمات تحسين محركات البحث المتخصصة لهذه القطاعات:
+            We provide specialized Arabic SEO services for:
           </p>
         </div>
 
@@ -503,8 +496,11 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-              نخدم عملاء في كل أنحاء المنطقة
+              Markets We Cover
             </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              We work with businesses across the Arabic-speaking world:
+            </p>
           </div>
 
           <div className="max-w-3xl mx-auto">
@@ -523,7 +519,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
                             className="inline-flex items-center gap-1 text-webskeet-blue hover:underline text-sm font-medium mt-1"
                           >
                             {loc.linkLabel}
-                            <ChevronLeft className="h-3 w-3" />
+                            <ChevronRight className="h-3 w-3" />
                           </Link>
                         )}
                       </div>
@@ -533,7 +529,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
               ))}
             </div>
             <p className="text-center text-gray-600 mt-6">
-              نعمل عن بُعد مع أي شركة في العالم تحتاج خبرة سيو عربي.
+              We also serve international companies entering Arabic markets from Europe, the US, and beyond.
             </p>
           </div>
         </div>
@@ -543,7 +539,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
       <section className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-            الأسئلة الشائعة عن خدمات السيو
+            Frequently Asked Questions
           </h2>
         </div>
 
@@ -551,7 +547,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`faq-${index}`}>
-                <AccordionTrigger className="text-right text-lg font-semibold hover:text-webskeet-blue">
+                <AccordionTrigger className="text-left text-lg font-semibold hover:text-webskeet-blue">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-700 leading-relaxed text-base">
@@ -564,7 +560,7 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
                         className="inline-flex items-center gap-1 text-webskeet-blue hover:underline font-medium"
                       >
                         {faq.link.label}
-                        <ChevronLeft className="h-3 w-3" />
+                        <ChevronRight className="h-3 w-3" />
                       </Link>
                     </>
                   )}
@@ -580,10 +576,10 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-webskeet-blue mb-4">
-              ابدأ بتحسين ظهور موقعك اليوم
+              Ready to Grow Your Arabic Search Visibility?
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-              احجز استشارة مجانية مع خبير سيو في ويب سكيت. نحلل موقعك، نحدد المشاكل والفرص، ونضع لك خطة عمل واضحة — كل هذا في 30 دقيقة.
+              Book a free consultation with a WebSkeet SEO expert. We'll analyze your site, identify opportunities in the Arabic market, and outline a clear action plan — all in 30 minutes.
             </p>
           </div>
         </div>

@@ -125,7 +125,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             <h3 className="font-bold text-lg mb-4 text-blue-400">{t.services}</h3>
             <ul className="space-y-2">
               <li>
-                <Link href={isArabic ? "/ar/seo-company" : "/ar/seo-company"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
+                <Link href={isArabic ? "/ar/seo-company" : "/arabic-seo-agency"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
                   {t.seoCompany}
                 </Link>
               </li>
@@ -135,7 +135,7 @@ export default function Footer({ locale }: { locale: Locale }) {
                 </Link>
               </li>
               <li>
-                <Link href={isArabic ? "/ar/seo-company#consultation" : "/#consultation"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
+                <Link href={isArabic ? "/ar/seo-company#consultation" : "/arabic-seo-agency#consultation"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
                   {t.freeConsultation}
                 </Link>
               </li>
