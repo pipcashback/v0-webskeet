@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, X, Globe, Check } from "lucide-react"
 import Image from "next/image"
 import type { Locale } from "@/i18n/config"
+import { getLocalizedPath, isSingleLanguagePage } from "@/lib/route-map"
 
 const navLinks = {
   en: {
@@ -35,14 +36,8 @@ function getLocalePath(path: string, locale: Locale): string {
   return locale === "ar" ? `/ar${path}` : path
 }
 
-function getLanguageSwitchPath(pathname: string, currentLocale: Locale): string {
-  if (currentLocale === "ar") {
-    // Remove /ar prefix to go to English
-    return pathname.replace(/^\/ar/, "") || "/"
-  }
-  // Add /ar prefix to go to Arabic
-  return `/ar${pathname === "/" ? "" : pathname}`
-}
+// getLanguageSwitchPath is now handled by getLocalizedPath from lib/route-map.ts
+// which supports different slugs between locales and single-language pages
 
 const Navbar = ({ locale }: { locale: Locale }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -74,7 +69,12 @@ const Navbar = ({ locale }: { locale: Locale }) => {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const switchPath = getLanguageSwitchPath(pathname, locale)
+  // Route-map-aware language switching
+  const targetLocale = isArabic ? "en" : "ar"
+  const switchPath = getLocalizedPath(pathname, targetLocale) || pathname
+  const hasSwitchTarget = !isSingleLanguagePage(pathname)
+  const enPath = isArabic ? switchPath : pathname
+  const arPath = isArabic ? pathname : switchPath
   const currentLangLabel = isArabic ? "AR" : "EN"
 
   const linkClass =
@@ -116,37 +116,39 @@ const Navbar = ({ locale }: { locale: Locale }) => {
             <Link href={getLocalePath("/blog", locale)} className={linkClass}>
               {t.blog}
             </Link>
-            {/* Language Switcher Dropdown */}
-            <div className="relative" ref={langRef}>
-              <button
-                onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 text-gray-700 hover:text-primary px-4 py-2 font-medium transition-colors"
-                title={isArabic ? "Switch to English" : "التبديل إلى العربية"}
-              >
-                <Globe className="h-4 w-4" />
-                <span className="text-sm">{currentLangLabel}</span>
-              </button>
-              {langOpen && (
-                <div className="absolute top-full mt-1 ltr:right-0 rtl:left-0 bg-white rounded-lg shadow-lg border border-gray-100 py-1 min-w-[140px] z-50">
-                  <Link
-                    href={isArabic ? switchPath : pathname}
-                    className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                    onClick={() => setLangOpen(false)}
-                  >
-                    <span>English</span>
-                    {!isArabic && <Check className="h-4 w-4 text-primary" />}
-                  </Link>
-                  <Link
-                    href={isArabic ? pathname : switchPath}
-                    className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                    onClick={() => setLangOpen(false)}
-                  >
-                    <span>العربية</span>
-                    {isArabic && <Check className="h-4 w-4 text-primary" />}
-                  </Link>
-                </div>
-              )}
-            </div>
+            {/* Language Switcher Dropdown — hidden on single-language pages */}
+            {hasSwitchTarget && (
+              <div className="relative" ref={langRef}>
+                <button
+                  onClick={() => setLangOpen(!langOpen)}
+                  className="flex items-center gap-1.5 text-gray-700 hover:text-primary px-4 py-2 font-medium transition-colors"
+                  title={isArabic ? "Switch to English" : "التبديل إلى العربية"}
+                >
+                  <Globe className="h-4 w-4" />
+                  <span className="text-sm">{currentLangLabel}</span>
+                </button>
+                {langOpen && (
+                  <div className="absolute top-full mt-1 ltr:right-0 rtl:left-0 bg-white rounded-lg shadow-lg border border-gray-100 py-1 min-w-[140px] z-50">
+                    <Link
+                      href={enPath}
+                      className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setLangOpen(false)}
+                    >
+                      <span>English</span>
+                      {!isArabic && <Check className="h-4 w-4 text-primary" />}
+                    </Link>
+                    <Link
+                      href={arPath}
+                      className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setLangOpen(false)}
+                    >
+                      <span>العربية</span>
+                      {isArabic && <Check className="h-4 w-4 text-primary" />}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* CTA Button + Mobile Toggle - end side (right in LTR, left in RTL) */}
@@ -186,31 +188,33 @@ const Navbar = ({ locale }: { locale: Locale }) => {
             <Link href={getLocalePath("/blog", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
               {t.blog}
             </Link>
-            {/* Language Switcher in mobile - inline options */}
-            <div className="px-4 py-2">
-              <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-1">
-                <Globe className="h-4 w-4" />
-                <span>{currentLangLabel}</span>
+            {/* Language Switcher in mobile — hidden on single-language pages */}
+            {hasSwitchTarget && (
+              <div className="px-4 py-2">
+                <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-1">
+                  <Globe className="h-4 w-4" />
+                  <span>{currentLangLabel}</span>
+                </div>
+                <div className="flex gap-2 ms-5">
+                  <Link
+                    href={enPath}
+                    className={`flex items-center gap-1 px-3 py-1 text-sm rounded-md transition-colors ${!isArabic ? "bg-primary/10 text-primary font-medium" : "text-gray-600 hover:bg-gray-50"}`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    English
+                    {!isArabic && <Check className="h-3 w-3" />}
+                  </Link>
+                  <Link
+                    href={arPath}
+                    className={`flex items-center gap-1 px-3 py-1 text-sm rounded-md transition-colors ${isArabic ? "bg-primary/10 text-primary font-medium" : "text-gray-600 hover:bg-gray-50"}`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    العربية
+                    {isArabic && <Check className="h-3 w-3" />}
+                  </Link>
+                </div>
               </div>
-              <div className="flex gap-2 ms-5">
-                <Link
-                  href={isArabic ? switchPath : pathname}
-                  className={`flex items-center gap-1 px-3 py-1 text-sm rounded-md transition-colors ${!isArabic ? "bg-primary/10 text-primary font-medium" : "text-gray-600 hover:bg-gray-50"}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  English
-                  {!isArabic && <Check className="h-3 w-3" />}
-                </Link>
-                <Link
-                  href={isArabic ? pathname : switchPath}
-                  className={`flex items-center gap-1 px-3 py-1 text-sm rounded-md transition-colors ${isArabic ? "bg-primary/10 text-primary font-medium" : "text-gray-600 hover:bg-gray-50"}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  العربية
-                  {isArabic && <Check className="h-3 w-3" />}
-                </Link>
-              </div>
-            </div>
+            )}
             <a href={getLocalePath("/#consultation", locale)} onClick={() => setIsOpen(false)}>
               <Button className="mx-4 my-2 btn-primary w-[calc(100%-2rem)] group overflow-hidden relative">
                 <span className="relative z-10">{t.cta}</span>
