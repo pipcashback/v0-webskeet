@@ -7,12 +7,16 @@ const footerContent = {
     description: "We help you improve your website's visibility in search results and increase targeted visitors",
     quickLinks: "Quick Links",
     services: "Our Services",
+    tools: "Our Tools",
     policies: "Our Policies",
     home: "Home",
     about: "About Us",
     blog: "Blog",
     faq: "FAQ",
     contact: "Contact Us",
+    seoCompany: "SEO Services",
+    seoPricing: "SEO Pricing",
+    freeConsultation: "Free Consultation",
     seoTitleGenerator: "SEO Title Generator",
     wordCounter: "Word Counter",
     seoRoiCalculator: "SEO ROI Calculator",
@@ -26,12 +30,16 @@ const footerContent = {
     description: "نساعدك في تحسين ظهور موقعك في نتائج البحث وزيادة عدد الزوار المستهدفين",
     quickLinks: "روابط سريعة",
     services: "خدماتنا",
+    tools: "أدواتنا",
     policies: "سياساتنا",
     home: "الرئيسية",
     about: "من نحن",
     blog: "المدونة",
     faq: "الأسئلة الشائعة",
     contact: "اتصل بنا",
+    seoCompany: "شركة سيو",
+    seoPricing: "أسعار خدمات السيو",
+    freeConsultation: "استشارة مجانية",
     seoTitleGenerator: "مولد عناوين SEO",
     wordCounter: "عداد الكلمات",
     seoRoiCalculator: "حاسبة عائد الاستثمار",
@@ -49,11 +57,12 @@ function lp(path: string, locale: Locale): string {
 
 export default function Footer({ locale }: { locale: Locale }) {
   const t = footerContent[locale]
+  const isArabic = locale === "ar"
 
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-white mt-auto border-t-4 border-blue-600">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <p className="text-gray-400 text-sm leading-relaxed">{t.description}</p>
@@ -111,9 +120,31 @@ export default function Footer({ locale }: { locale: Locale }) {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Our Services */}
           <div>
             <h3 className="font-bold text-lg mb-4 text-blue-400">{t.services}</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href={isArabic ? "/ar/seo-company" : "/ar/seo-company"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
+                  {t.seoCompany}
+                </Link>
+              </li>
+              <li>
+                <Link href={lp("/seo-pricing", locale)} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
+                  {t.seoPricing}
+                </Link>
+              </li>
+              <li>
+                <Link href={isArabic ? "/ar/seo-company#consultation" : "/#consultation"} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">
+                  {t.freeConsultation}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Our Tools (renamed from "Our Services") */}
+          <div>
+            <h3 className="font-bold text-lg mb-4 text-blue-400">{t.tools}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href={lp("/tools/seo-title-generator", locale)} className="text-gray-400 hover:text-blue-400 transition-colors text-sm">

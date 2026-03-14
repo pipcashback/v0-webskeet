@@ -55,6 +55,12 @@ const nextConfig = {
         destination: '/ar/blog/:slug',
         permanent: true,
       },
+      // SEO company page only exists in Arabic — redirect English to Arabic
+      {
+        source: '/seo-company',
+        destination: '/ar/seo-company',
+        permanent: true,
+      },
     ]
   },
   async headers() {

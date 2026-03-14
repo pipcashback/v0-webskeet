@@ -12,6 +12,7 @@ import { getLocalizedPath, isSingleLanguagePage } from "@/lib/route-map"
 const navLinks = {
   en: {
     home: "Home",
+    services: "Services",
     pricing: "Pricing",
     faq: "FAQ",
     newsletter: "Newsletter",
@@ -22,6 +23,7 @@ const navLinks = {
   },
   ar: {
     home: "الرئيسية",
+    services: "خدماتنا",
     pricing: "أسعار",
     faq: "الأسئلة الشائعة",
     newsletter: "النشرة البريدية",
@@ -101,6 +103,9 @@ const Navbar = ({ locale }: { locale: Locale }) => {
             <Link href={getLocalePath("/", locale)} className={linkClass}>
               {t.home}
             </Link>
+            <Link href={getLocalePath("/seo-company", locale)} className={linkClass}>
+              {t.services}
+            </Link>
             <Link href={getLocalePath("/seo-pricing", locale)} className={linkClass}>
               {t.pricing}
             </Link>
@@ -172,6 +177,9 @@ const Navbar = ({ locale }: { locale: Locale }) => {
           <div className="lg:hidden pt-2 pb-4 animate-fade-in">
             <Link href={getLocalePath("/", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
               {t.home}
+            </Link>
+            <Link href={getLocalePath("/seo-company", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+              {t.services}
             </Link>
             <Link href={getLocalePath("/seo-pricing", locale)} className={mobileLinkClass} onClick={() => setIsOpen(false)}>
               {t.pricing}

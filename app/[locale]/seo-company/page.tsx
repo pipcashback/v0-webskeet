@@ -1,40 +1,36 @@
 import type { Metadata } from "next"
 import type { Locale } from "@/i18n/config"
+import { redirect } from "next/navigation"
 import SeoCompanyClient from "./seo-company-client"
 import SchemaMarkup from "@/components/seo/schema-markup"
 import { Breadcrumbs } from "@/components/ui/breadcrumbs"
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
-  const isArabic = locale === "ar"
 
-  const title = isArabic
-    ? "شركة سيو احترافية | خدمات تحسين محركات البحث — ويب سكيت"
-    : "Professional SEO Company | Search Engine Optimization Services — Webskeet"
-  const description = isArabic
-    ? "شركة سيو متخصصة في تحسين محركات البحث للمواقع العربية والإنجليزية. خبرة +8 سنوات في السيو التقني وسيو المتاجر الإلكترونية. احجز استشارة مجانية الآن."
-    : "Professional SEO company specializing in search engine optimization for Arabic and English websites. 8+ years of experience in technical SEO and e-commerce SEO. Book a free consultation now."
+  // Only Arabic version exists — return noindex for English
+  if (locale !== "ar") {
+    return {
+      title: "SEO Company",
+      description: "This page is available in Arabic.",
+      robots: { index: false, follow: false },
+    }
+  }
 
   return {
-    title,
-    description,
-    keywords: isArabic
-      ? "شركة سيو, شركة تحسين محركات البحث, خدمات سيو, خبير سيو, سيو تقني, سيو المتاجر الإلكترونية, افضل شركة سيو"
-      : "SEO company, search engine optimization, SEO services, SEO expert, technical SEO, e-commerce SEO, best SEO company",
+    title: "شركة سيو احترافية | خدمات تحسين محركات البحث — ويب سكيت",
+    description: "شركة سيو متخصصة في تحسين محركات البحث للمواقع العربية والإنجليزية. خبرة +8 سنوات في السيو التقني وسيو المتاجر الإلكترونية. احجز استشارة مجانية الآن.",
+    keywords: "شركة سيو, شركة تحسين محركات البحث, خدمات سيو, خبير سيو, سيو تقني, سيو المتاجر الإلكترونية, افضل شركة سيو",
     openGraph: {
-      title: isArabic
-        ? "شركة سيو احترافية — ويب سكيت | خدمات تحسين محركات البحث"
-        : "Professional SEO Company — Webskeet | Search Engine Optimization Services",
-      description: isArabic
-        ? "شركة سيو متخصصة في تحسين محركات البحث للمواقع العربية والإنجليزية. خبرة +8 سنوات في السيو التقني وسيو المتاجر الإلكترونية."
-        : "Professional SEO company specializing in search engine optimization for Arabic and English websites. 8+ years of experience.",
-      url: isArabic ? "https://webskeet.com/ar/seo-company" : "https://webskeet.com/seo-company",
-      siteName: isArabic ? "ويب سكيت" : "Webskeet",
-      locale: isArabic ? "ar_EG" : "en_US",
+      title: "شركة سيو احترافية — ويب سكيت | خدمات تحسين محركات البحث",
+      description: "شركة سيو متخصصة في تحسين محركات البحث للمواقع العربية والإنجليزية. خبرة +8 سنوات في السيو التقني وسيو المتاجر الإلكترونية.",
+      url: "https://webskeet.com/ar/seo-company",
+      siteName: "ويب سكيت",
+      locale: "ar_EG",
       type: "website",
     },
     alternates: {
-      canonical: isArabic ? "https://webskeet.com/ar/seo-company" : "https://webskeet.com/seo-company",
+      canonical: "https://webskeet.com/ar/seo-company",
       languages: {
         ar: "https://webskeet.com/ar/seo-company",
         en: "https://webskeet.com/arabic-seo-agency",
@@ -136,14 +132,19 @@ const faqSchema = {
 
 export default async function SeoCompanyPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
-  const isArabic = locale === "ar"
 
-  const lp = (path: string) => (locale === "ar" ? `/ar${path}` : path)
+  // Only Arabic version exists — redirect English to Arabic
+  if (locale !== "ar") {
+    redirect("/ar/seo-company")
+  }
 
+  const lp = (path: string) => `/ar${path}`
+
+  // Page only renders in Arabic (English redirects above)
   const breadcrumbItems = [
-    { label: isArabic ? "الرئيسية" : "Home", href: lp("/") },
-    { label: isArabic ? "خدماتنا" : "Services", href: lp("/seo-company") },
-    { label: isArabic ? "شركة سيو" : "SEO Company", href: lp("/seo-company") },
+    { label: "الرئيسية", href: lp("/") },
+    { label: "خدماتنا", href: lp("/seo-company") },
+    { label: "شركة سيو", href: lp("/seo-company") },
   ]
 
   return (

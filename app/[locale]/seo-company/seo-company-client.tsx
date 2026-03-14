@@ -280,11 +280,12 @@ export default function SeoCompanyClient({ locale }: { locale: Locale }) {
                   احجز استشارة مجانية
                 </Button>
               </Link>
-              <Link href="#services">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto">
-                  تعرف على خدماتنا
-                </Button>
-              </Link>
+              <a
+                href="#services"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg border-2 border-white text-white hover:bg-white hover:text-webskeet-blue transition-all w-full sm:w-auto"
+              >
+                تعرف على خدماتنا
+              </a>
             </div>
             <p className="text-sm text-white/60 mt-4">
               نحلل موقعك ونوريك فرص النمو خلال 30 دقيقة.
