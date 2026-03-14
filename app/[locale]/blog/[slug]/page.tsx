@@ -58,9 +58,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     alternates: {
       canonical: blogUrl,
       languages: {
-        en: `https://webskeet.com/blog/${slug}`,
+        // Blog posts only exist in Arabic — no hreflang="en" to avoid pointing to 404
         ar: `https://webskeet.com/ar/blog/${slug}`,
-        "x-default": `https://webskeet.com/blog/${slug}`,
+        "x-default": `https://webskeet.com/ar/blog/${slug}`,
       },
     },
     openGraph: {
