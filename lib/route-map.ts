@@ -74,7 +74,7 @@ export function getLocalizedPath(currentPath: string, targetLocale: "en" | "ar")
     return null
   }
 
-  const isArabic = path.startsWith("/ar")
+  const isArabic = path.startsWith("/ar/") || path === "/ar"
 
   // Already in target locale
   if ((isArabic && targetLocale === "ar") || (!isArabic && targetLocale === "en")) {
