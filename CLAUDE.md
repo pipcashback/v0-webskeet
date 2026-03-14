@@ -63,3 +63,7 @@ CSS variables for theming in `app/globals.css` with dark mode support via class 
 
 - ESLint and TypeScript errors are ignored during builds (see `next.config.mjs`)
 - Image optimization configured for Contentful, v0.app blob storage, and Unsplash domains
+
+## Custom Instructions
+
+- Always use context7 MCP to fetch the latest documentation when working with Next.js, React, or any library
