@@ -9,11 +9,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const isArabic = locale === "ar"
 
   const title = isArabic
-    ? "تحسين محركات البحث باحتراف مع خبير سيو | احصل على تصنيف أفضل"
-    : "Professional SEO Services | Get Better Rankings"
+    ? "خبير سيو | ضاعف زيارات موقعك مع أفضل خدمات تحسين محركات البحث"
+    : "SEO Expert | Double Your Traffic with Professional SEO Services"
   const description = isArabic
-    ? "نساعدك في رفع ترتيب موقعك وزيادة الزوار العضويين المهتمين بخدماتك أو منتجاتك احصل على استشارة مجانية الآن لتحديد أفضل استراتيجيات سيو لموقعك ..."
-    : "We help you boost your website ranking and increase organic visitors interested in your services or products. Get a free consultation now to determine the best SEO strategies for your website."
+    ? "احصل على استشارة SEO مجانية من خبير سيو متخصص. نساعدك في تصدر نتائج البحث وزيادة الزوار العضويين بنتائج مثبتة. ابدأ الآن!"
+    : "Get a free SEO consultation from a specialized expert. We help you rank higher and grow organic traffic with proven results. Start now!"
   const siteName = isArabic ? "ويب سكيت" : "Webskeet"
 
   return {
