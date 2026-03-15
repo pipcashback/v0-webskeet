@@ -48,6 +48,27 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Old slug redirects: removed year from blog post slugs
+      {
+        source: '/ar/blog/seo-strategies-2025',
+        destination: '/ar/blog/seo-strategies',
+        permanent: true,
+      },
+      {
+        source: '/ar/blog/off-page-seo-techniques-2025',
+        destination: '/ar/blog/off-page-seo-techniques',
+        permanent: true,
+      },
+      {
+        source: '/blog/seo-strategies-2025',
+        destination: '/ar/blog/seo-strategies',
+        permanent: true,
+      },
+      {
+        source: '/blog/off-page-seo-techniques-2025',
+        destination: '/ar/blog/off-page-seo-techniques',
+        permanent: true,
+      },
       // Old Arabic blog posts were at /blog/:slug before bilingual migration.
       // Redirect to /ar/blog/:slug (301). Does NOT affect /blog index page.
       {
