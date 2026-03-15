@@ -1,7 +1,6 @@
 import { fetchBlogPosts } from "@/lib/contentful"
 import {
   buildUrlset,
-  bilingualAlternates,
   formatDate,
   xmlResponse,
   BASE_URL,
@@ -10,6 +9,12 @@ import {
 export const dynamic = "force-dynamic"
 export const revalidate = 3600
 
+// Slugs that have been redirected (year removed) — exclude from sitemap
+const REDIRECTED_SLUGS = new Set([
+  "seo-strategies-2025",
+  "off-page-seo-techniques-2025",
+])
+
 export async function GET() {
   let urls: Parameters<typeof buildUrlset>[0] = []
 
@@ -17,27 +22,19 @@ export async function GET() {
     const posts = await fetchBlogPosts()
 
     for (const post of posts) {
-      const lastmod = post.date ? formatDate(new Date(post.date)) : formatDate(new Date())
-      const enPath = `/blog/${post.slug}`
-      const arPath = `/ar/blog/${post.slug}`
-      const alternates = bilingualAlternates(enPath, arPath)
+      // Skip slugs that are redirected to new URLs
+      if (REDIRECTED_SLUGS.has(post.slug)) continue
 
-      urls.push(
-        {
-          loc: `${BASE_URL}${enPath}`,
-          lastmod,
-          changefreq: "weekly",
-          priority: 0.8,
-          alternates,
-        },
-        {
-          loc: `${BASE_URL}${arPath}`,
-          lastmod,
-          changefreq: "weekly",
-          priority: 0.8,
-          alternates,
-        }
-      )
+      const lastmod = post.date ? formatDate(new Date(post.date)) : formatDate(new Date())
+
+      // /blog/:slug redirects to /ar/blog/:slug (see next.config.mjs)
+      // Only include the Arabic canonical URL in sitemap
+      urls.push({
+        loc: `${BASE_URL}/ar/blog/${post.slug}`,
+        lastmod,
+        changefreq: "weekly",
+        priority: 0.8,
+      })
     }
   } catch (error) {
     console.error("Sitemap: failed to fetch blog posts from Contentful:", error)

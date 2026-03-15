@@ -93,6 +93,19 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/sitemap:path*.xml',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/xml; charset=utf-8',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           {

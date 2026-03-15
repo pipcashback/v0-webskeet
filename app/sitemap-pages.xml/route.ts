@@ -13,30 +13,33 @@ export const revalidate = 3600
 export async function GET() {
   const now = formatDate(new Date())
 
+  // Hreflang cross-reference: /arabic-seo-agency (en) ↔ /ar/seo-company (ar)
+  // /seo-company (en) redirects to /ar/seo-company — excluded
+  // /ar/arabic-seo-agency redirects to /ar/seo-company — excluded
+  const seoCompanyAlternates = bilingualAlternates("/arabic-seo-agency", "/ar/seo-company")
+
   const urls = [
     // Homepage
     ...bilingualEntries("", now, "daily", 1.0),
 
     // Service pages
-    ...bilingualEntries("/seo-company", now, "weekly", 0.9),
-    ...bilingualEntries("/seo-pricing", now, "weekly", 0.9),
-    ...bilingualEntries("/guest-posting-service", now, "weekly", 0.9),
-
-    // Arabic SEO Agency — special cross-reference with /ar/seo-company
+    // /arabic-seo-agency serves English content; /ar/seo-company serves Arabic content
     {
       loc: `${BASE_URL}/arabic-seo-agency`,
       lastmod: now,
       changefreq: "weekly" as const,
       priority: 0.9,
-      alternates: bilingualAlternates("/arabic-seo-agency", "/ar/seo-company"),
+      alternates: seoCompanyAlternates,
     },
     {
-      loc: `${BASE_URL}/ar/arabic-seo-agency`,
+      loc: `${BASE_URL}/ar/seo-company`,
       lastmod: now,
       changefreq: "weekly" as const,
       priority: 0.9,
-      alternates: bilingualAlternates("/arabic-seo-agency", "/ar/seo-company"),
+      alternates: seoCompanyAlternates,
     },
+    ...bilingualEntries("/seo-pricing", now, "weekly", 0.9),
+    ...bilingualEntries("/guest-posting-service", now, "weekly", 0.9),
 
     // Core pages
     ...bilingualEntries("/about", now, "monthly", 0.8),

@@ -21,6 +21,7 @@ export function buildSitemapIndex(sitemaps: { loc: string; lastmod: string }[]):
     .join("\n")
 
   return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries}
 </sitemapindex>`
@@ -49,6 +50,7 @@ ${alternateLinks}
     .join("\n")
 
   return `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries}
@@ -58,7 +60,8 @@ ${entries}
 export function xmlResponse(xml: string): Response {
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/xml",
+      "Content-Type": "text/xml; charset=utf-8",
+      "X-Content-Type-Options": "nosniff",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=600",
     },
   })
