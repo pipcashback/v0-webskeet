@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const isArabic = locale === "ar"
 
   const title = isArabic
-    ? "خدمة الجيست بوست | عزز موقعك أو اربح من المحتوى"
-    : "Guest Posting Service | Boost Your Website or Earn from Content"
+    ? "خدمة الجيست بوست | احصل على باك لينك قوي وعزز ترتيب موقعك"
+    : "Guest Posting Service | Get Quality Backlinks & Boost Your Rankings"
   const description = isArabic
-    ? "منصة عربية تربط أصحاب المواقع بكتاب المقالات. احصل على جيست بوست عالي الجودة لتحسين السيو أو اربح من نشر مقالات على موقعك. سجل مجانًا الآن!"
-    : "An Arabic platform connecting website owners with content writers. Get high-quality guest posts to improve SEO or earn from publishing articles on your website. Register for free now!"
+    ? "اشترِ جيست بوست عربي عالي الجودة بأسعار تبدأ من $15. روابط خلفية دوفلو من مواقع حقيقية لتحسين ترتيبك في جوجل. سجل مجاناً وابدأ الآن!"
+    : "Buy quality Arabic guest posts starting at $15. Dofollow backlinks from real websites to boost your Google rankings. Register free and start now!"
   const ogDescription = isArabic
     ? "منصة عربية تربط أصحاب المواقع بكتاب المقالات لزيادة الزوار والأرباح"
     : "An Arabic platform connecting website owners with content writers to increase traffic and revenue"
